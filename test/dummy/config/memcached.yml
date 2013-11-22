@@ -1,0 +1,6 @@
+local: &local
+  - 127.0.0.1:11211
+  
+development: *local
+
+test: *local
