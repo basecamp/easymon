@@ -1,0 +1,2 @@
+module EasymonHelper
+end
