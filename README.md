@@ -2,6 +2,10 @@
 
 This gem extracts and modularizes the logic we had in our monitoring controllers
 and were copying back and forth between applications.
+
+Currently Rails 3+.
+
+
 ## Installation
 
 Not sure yet. This might work:
