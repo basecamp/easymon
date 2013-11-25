@@ -32,8 +32,9 @@ Ok, you'll need to add an initializer for this to do anything. In
 ```
 Easymon::Repository.add("Application Database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base.connection))
 ```
+This will register a check called "application-database" for use.
 
-This will register a check called "application-database", and run it when you
-visit "`/up/application-database`" or as a part of your overall checklist at 
-"`/up`".
+Next, add `mount Easymon::Engine => "/up"` to your `config/routes.rb`.
+When you visit `/up/application-database` or as a part of your overall 
+checklist at `/up`.
 
