@@ -3,6 +3,7 @@ require 'test_helper'
 class RedisCheckTest < ActiveSupport::TestCase
   
   test "#run sets success conditions on successful run" do
+    Redis.any_instance.stubs(:ping).returns("PONG")
     check = create_check
     check.run
     
@@ -24,7 +25,9 @@ class RedisCheckTest < ActiveSupport::TestCase
   
   private
   def create_check
-    check = Easymon::RedisCheck.new("config/redis.yml")
+    config = YAML.load_file(Rails.root.join("config/redis.yml"))[Rails.env].symbolize_keys
+    redis = Redis.new(config)
+    check = Easymon::RedisCheck.new(redis)
     check.name = "Redis"
     return check
   end

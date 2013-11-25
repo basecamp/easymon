@@ -2,12 +2,11 @@ require "redis"
 
 module Easymon
   class RedisCheck < Check
-    attr_accessor :config
+    attr_accessor :redis
     
-    def initialize(config_file)
+    def initialize(redis)
       super()
-      
-      self.config = YAML.load_file(Rails.root.join(config_file))[Rails.env].symbolize_keys
+      self.redis = redis
     end 
     
     def check
@@ -22,7 +21,6 @@ module Easymon
     
     private
       def redis_up?
-        redis = Redis.new(config)
         redis.ping == 'PONG'
       rescue
         false
