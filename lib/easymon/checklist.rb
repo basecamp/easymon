@@ -42,5 +42,13 @@ module Easymon
       checks.select(&:critical).size > 0
     end
     
+    def response_status
+      if has_critical?
+        critical_success? ? :ok : :service_unavailable
+      else
+        success? ? :ok : :service_unavailable
+      end
+    end
+    
   end
 end

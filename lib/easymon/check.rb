@@ -47,6 +47,10 @@ module Easymon
       has_run and not failed
     end
     
+    def response_status
+      success? ? :ok : :service_unavailable
+    end
+    
     private
     
       def check
