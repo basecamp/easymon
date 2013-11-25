@@ -1,11 +1,11 @@
 module Easymon
   class ActiveRecordCheck < Check
-    attr_accessor :connection
+    attr_accessor :klass
     
-    def initialize(connection, critical=true)
+    def initialize(klass, critical=true)
       super()
       
-      self.connection = connection
+      self.klass = klass
       self.critical = critical
     end 
     
@@ -21,7 +21,7 @@ module Easymon
     
     private
       def database_up?
-        1 == connection.select_value("SELECT 1=1").to_i
+        1 == klass.connection.select_value("SELECT 1=1").to_i
       rescue
         false
       end

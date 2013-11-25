@@ -30,7 +30,7 @@ Ok, you'll need to add an initializer for this to do anything. In
 `config/initializers/easymon.rb`:
 
 ```
-Easymon::Repository.add("Application Database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base.connection))
+Easymon::Repository.add("Application Database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
 ```
 This will register a check called "application-database" for use.
 

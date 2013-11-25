@@ -25,8 +25,8 @@ module Easymon
     end
     
     private
-      def database_up?(connection)
-        1 == connection.select_value("SELECT 1=1").to_i
+      def database_up?(klass)
+        1 == klass.connection.select_value("SELECT 1=1").to_i
       rescue
         false
       end

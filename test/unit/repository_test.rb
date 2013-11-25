@@ -3,7 +3,7 @@ require 'test_helper'
 class RepositoryTest < ActiveSupport::TestCase
   
   test "we can add a check to the repository" do
-    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base.connection))
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
     check = Easymon::Repository.fetch("database")
     
     assert_equal 1, Easymon::Repository.repository.size, Easymon::Repository.repository.inspect
@@ -11,7 +11,7 @@ class RepositoryTest < ActiveSupport::TestCase
   end
   
   test "we can remove a check from the repository" do
-    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base.connection))
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
     assert_equal 1, Easymon::Repository.repository.size
     
     Easymon::Repository.remove("database")
@@ -24,7 +24,7 @@ class RepositoryTest < ActiveSupport::TestCase
   end
   
   test "returns a checklist when asked" do
-    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base.connection))
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
     checklist = Easymon::Repository.all
     
     assert checklist.instance_of? Easymon::Checklist

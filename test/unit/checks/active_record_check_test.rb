@@ -41,7 +41,7 @@ class ActiveRecordCheckTest < ActiveSupport::TestCase
   
   private
   def create_check
-    check = Easymon::ActiveRecordCheck.new(ActiveRecord::Base.connection)
+    check = Easymon::ActiveRecordCheck.new(ActiveRecord::Base)
     check.name = "ActiveRecord"
     return check
   end
