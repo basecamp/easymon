@@ -24,7 +24,8 @@ class RedisCheckTest < ActiveSupport::TestCase
   
   private
   def create_check
-    check = Easymon::RedisCheck.new("config/redis.yml")
+    # Get us a config hash from disk in this case
+    check = Easymon::RedisCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"))[Rails.env].symbolize_keys)
     check.name = "Redis"
     return check
   end
