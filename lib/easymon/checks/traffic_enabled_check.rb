@@ -1,13 +1,13 @@
 module Easymon
   class TrafficEnabledCheck < SemaphoreCheck
     def check
-      if semaphore_exists?
-        status = "Traffic is enabled"
+      check_status = semaphore_exists?
+      if check_status
+        message = "Traffic is enabled"
       else
-        status = "Traffic is DISABLED"
-        set_failure
+        message = "Traffic is DISABLED"
       end
-      set_message status
+      [check_status, message]
     end
   end
 end

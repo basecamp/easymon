@@ -1,23 +1,21 @@
 require "redis"
 
 module Easymon
-  class RedisCheck < Check
+  class RedisCheck
     attr_accessor :config
     
     def initialize(config)
-      super()
-      
       self.config = config
     end 
     
     def check
-      if redis_up?
-        status = "Up"
+      check_status = redis_up?
+      if check_status
+        message = "Up"
       else
-        status = "Down"
-        set_failure
+        message = "Down"
       end
-      set_message status
+      [check_status, message]
     end
     
     private

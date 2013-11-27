@@ -1,23 +1,21 @@
 require "dalli"
 
 module Easymon
-  class MemcachedCheck < Check
+  class MemcachedCheck
     attr_accessor :cache
     
     def initialize(cache)
-      super()
-      
       self.cache = cache
     end 
     
     def check
-      if memcached_up?
-        status = "Up"
+      check_status = memcached_up?
+      if check_status
+        message = "Up"
       else
-        status = "Down"
-        set_failure
+        message = "Down"
       end
-      set_message status
+      [check_status, message]
     end
     
     private

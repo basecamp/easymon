@@ -1,5 +1,4 @@
 require "easymon/engine"
-require "easymon/check"
 require "easymon/checklist"
 require "easymon/repository"
 require "easymon/result"

@@ -1,5 +1,5 @@
 module Easymon
-  class SplitActiveRecordCheck < Check
+  class SplitActiveRecordCheck
     attr_accessor :block
     attr_accessor :results
     
@@ -29,27 +29,20 @@ module Easymon
     #   [ActiveRecord::Base.connection, Easymon::Base.connection] 
     # }
     # Easymon::Repository.add("split-database", check)
-    def initialize(critical=true, &block)
-      super()
-      
-      self.critical = critical
+    def initialize(&block)
       self.block = block
-      self.results = []
     end 
     
+    # Assumes only 2 connections
     def check
       connections = Array(@block.call)
 
-      self.results = connections.map{|connection| database_up?(connection) }
+      results = connections.map{|connection| database_up?(connection) }
       
-      master_status = @results.first ? "Master: Up" : "Master: Down"
-      slave_status = @results.last ? "Slave: Up" : "Slave: Down"
+      master_status = results.first ? "Master: Up" : "Master: Down"
+      slave_status = results.last ? "Slave: Up" : "Slave: Down"
       
-      unless results.all?
-        set_failure
-      end
-      
-      set_message "#{master_status} - #{slave_status}"
+      [results.all?, "#{master_status} - #{slave_status}"]
     end
     
     private
