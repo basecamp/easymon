@@ -19,7 +19,7 @@ class ActiveSupport::TestCase
     # This is needed to prevent leakage between tests, the Easymon::Repository
     # will remember all checks added to it, regardless of what test it was
     # added in
-    Easymon::Repository.repository.all? {|k,v| Easymon::Repository.remove(k)}
+    Easymon::Repository.names.each {|name| Easymon::Repository.remove(name)}
   end
 end
 
@@ -28,6 +28,6 @@ class ActionController::TestCase
     # This is needed to prevent leakage between tests, the Easymon::Repository
     # will remember all checks added to it, regardless of what test it was
     # added in
-    Easymon::Repository.repository.all? {|k,v| Easymon::Repository.remove(k)}
+    Easymon::Repository.names.each {|name| Easymon::Repository.remove(name)}
   end
 end

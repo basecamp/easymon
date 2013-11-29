@@ -15,6 +15,6 @@ class SemaphoreCheckTest < ActiveSupport::TestCase
     results = check.check
 
     assert_equal(false, results[0])
-    assert_equal("traffic_enabled does not exist!", results[1])
+    assert_equal("config/file-does-not-exist does not exist!", results[1])
   end
 end

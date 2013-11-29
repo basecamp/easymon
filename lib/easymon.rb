@@ -11,4 +11,5 @@ require "easymon/checks/semaphore_check"
 require "easymon/checks/traffic_enabled_check"
 
 module Easymon
+  NoSuchCheck = Class.new(StandardError)
 end

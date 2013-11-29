@@ -1,17 +1,22 @@
 module Easymon
   class Checklist
+    extend Forwardable
+    def_delegators :@items, :size, :include?, :empty?
+    
     attr_accessor :items
+    attr_accessor :results
     
     def initialize(items={})
       self.items = items
+      self.results = {}
     end
     
-    def run
-      checks.each(&:run)
-    end
-    
-    def checks
-      items.values
+    def check
+      self.results = items.inject({}) do |hash, (name, check)|
+        hash[name] = Easymon::Result.new(check.check)
+        hash
+      end
+      [self.success?, self.to_s]
     end
     
     def to_text
@@ -19,36 +24,34 @@ module Easymon
     end
     
     def to_s
-      checks.map(&:to_s).join("\n")
+      self.results.map{|name, result| "#{name}: #{result.to_s}"}.join("\n")
     end
     
     def to_json(*args)
       combined = []
-      checks.each do |check|
-        combined << check.to_hash
+      self.results.each do |name, result|
+        combined << result.to_hash.merge({"name" => name})
       end
       combined.to_json
     end
     
     def success?
-      checks.all?(&:success?)
-    end
-    
-    def critical_success?
-      checks.select(&:critical).all?(&:success?)
-    end
-    
-    def has_critical?
-      checks.select(&:critical).size > 0
+      return false if results.empty?
+      results.values.all?(&:success?)
     end
     
     def response_status
-      if has_critical?
-        critical_success? ? :ok : :service_unavailable
-      else
-        success? ? :ok : :service_unavailable
-      end
+      success? ? :ok : :service_unavailable
     end
     
+    # The following method could be implemented as a def_delegator by 
+    # extending Forwardable, but since we want to catch KeyError and
+    # raise Easymon::NoSuchCheck, we'll be explicit here.
+    # 
+    def fetch(name)
+      items.fetch(name)
+    rescue KeyError
+      raise NoSuchCheck, "No check named '#{name}'"
+    end
   end
 end
