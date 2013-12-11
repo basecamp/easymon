@@ -73,6 +73,7 @@ available at:
  * Semaphore
  * Traffic Enabled
  * Split ActiveRecord
+ * Elasticsearch*
  
 ###ActiveRecord
 `Easymon::ActiveRecordCheck` is a basic check that uses ActiveRecord to check the
@@ -146,3 +147,14 @@ We would check both it and `ActiveRecord::Base` like so (two lines for readabili
       [ActiveRecord::Base.connection, Easymon::Base.connection] 
     }
     Easymon::Repository.add("split-database", check)
+
+###Elasticsearch*
+`Easymon::ElasticsearchCheck` will check the availability of an Elasticsearch 
+server, given an appropriate server URL.  Typically, we'll read the config off 
+disk, but as long as you get a valid URL, this will work:
+
+    config = YAML.load_file(Rails.root.join("config/elasticsearch.yml"))[Rails.env].symbolize_keys
+    Easymon::ElasticsearchCheck.new(config[:url])
+
+***
+* Based on 37signals Elasticsearch gem, Elastic, which is not OSS

@@ -9,13 +9,13 @@ Gem::Specification.new do |s|
   s.version     = Easymon::VERSION
   s.authors     = ["Nathan Anderson"]
   s.email       = ["andnat@gmail.com"]
-  s.homepage    = "TODO"
+  s.homepage    = "http://github.com/37signals/easymon"
   s.summary     = "Simple availability checks for your rails 3+ app"
   s.description = "Enables your monitoring infrastructure to easily query the
                    status of your app server's health.  Provides routes under
                    /up."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.15"
