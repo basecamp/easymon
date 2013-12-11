@@ -15,7 +15,7 @@ class RepositoryTest < ActiveSupport::TestCase
     assert_equal 1, Easymon::Repository.repository.size
     
     Easymon::Repository.remove("database")
-    exception = assert_raises Easymon::Repository::NoSuchCheck do
+    exception = assert_raises Easymon::NoSuchCheck do
       Easymon::Repository.fetch("database")
     end
     
@@ -28,5 +28,17 @@ class RepositoryTest < ActiveSupport::TestCase
     checklist = Easymon::Repository.all
     
     assert checklist.instance_of? Easymon::Checklist
+  end
+  
+  test "adds checks marked critical to the critical checklist" do
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), true)
+    
+    assert Easymon::Repository.critical.include?("database")
+  end
+  
+  test "adds a check to the repository for the critical checklist" do
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), true)
+    
+    assert Easymon::Repository.repository.include?("critical")
   end
 end

@@ -1,7 +1,11 @@
 module Easymon
   class Repository
+    attr_reader :repository
+    attr_reader :critical
+    
     def self.fetch(name)
-      repository.fetch(name)
+      return repository.fetch(name) if repository.include?(name)
+      critical.fetch(name)
     rescue KeyError
       raise NoSuchCheck, "No check named '#{name}'"
     end
@@ -10,19 +14,30 @@ module Easymon
       Checklist.new repository
     end
     
-    def self.add(name, check)
-      check.name = name
-      repository[name] = check
+    def self.names
+      repository.keys + critical.keys
+    end
+    
+    def self.add(name, check, is_critical=false)
+      if is_critical
+        critical[name] = check
+        repository["critical"] = Checklist.new critical
+      else
+        repository[name] = check
+      end
     end
     
     def self.remove(name)
       repository.delete(name)
+      critical.delete(name)
     end
     
     def self.repository
       @repository ||= {}
     end
     
-    NoSuchCheck = Class.new(StandardError)
+    def self.critical
+      @critical ||= {}
+    end
   end
 end

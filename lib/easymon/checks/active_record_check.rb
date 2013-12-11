@@ -1,22 +1,19 @@
 module Easymon
-  class ActiveRecordCheck < Check
+  class ActiveRecordCheck
     attr_accessor :klass
     
-    def initialize(klass, critical=true)
-      super()
-      
+    def initialize(klass)
       self.klass = klass
-      self.critical = critical
     end 
     
     def check
-      if database_up?
-        status = "Up"
+      check_status = database_up?
+      if check_status
+        message = "Up"
       else
-        status = "Down"
-        set_failure
+        message = "Down"
       end
-      set_message status
+      [check_status, message]
     end
     
     private

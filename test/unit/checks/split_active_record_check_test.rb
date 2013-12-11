@@ -8,12 +8,11 @@ class SplitActiveRecordCheckTest < ActiveSupport::TestCase
     slave = Easymon::Base.connection
     
     check = Easymon::SplitActiveRecordCheck.new { [master, slave] }
-    check.name = "SplitActiveRecord"
-    check.run
     
-    assert_equal("Master: Up - Slave: Up", check.message)
-    assert_equal(false, check.failed)
-    assert_equal(true, check.success?)
+    results = check.check
+    
+    assert_equal("Master: Up - Slave: Up", results[1])
+    assert_equal(true, results[0])
   end
   
   test "#run sets failed conditions when slave is down" do
@@ -24,12 +23,10 @@ class SplitActiveRecordCheckTest < ActiveSupport::TestCase
     slave.stubs(:select_value).raises("boom")
     
     check = Easymon::SplitActiveRecordCheck.new { [master, slave] }
-    check.name = "SplitActiveRecord"
-    check.run
+    results = check.check
 
-    assert_equal("Master: Up - Slave: Down", check.message)
-    assert_equal(true, check.failed)
-    assert_equal(false, check.success?)
+    assert_equal("Master: Up - Slave: Down", results[1])
+    assert_equal(false, results[0])
   end
   
   test "#run sets failed conditions when master is down" do
@@ -40,12 +37,10 @@ class SplitActiveRecordCheckTest < ActiveSupport::TestCase
     master.stubs(:select_value).raises("boom")
     
     check = Easymon::SplitActiveRecordCheck.new { [master, slave] }
-    check.name = "SplitActiveRecord"
-    check.run
+    results = check.check
     
-    assert_equal("Master: Down - Slave: Up", check.message)
-    assert_equal(true, check.failed)
-    assert_equal(false, check.success?)
+    assert_equal("Master: Down - Slave: Up", results[1])
+    assert_equal(false, results[0])
   end
 end
 
