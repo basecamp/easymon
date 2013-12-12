@@ -19,10 +19,11 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.15"
-  # s.add_dependency "jquery-rails"
+  s.add_dependency "rest-client"
+  s.add_dependency "redis"
 
   s.add_development_dependency "mysql2"
   s.add_development_dependency "mocha"
-  s.add_development_dependency "redis"
   s.add_development_dependency "dalli"
+  
 end
