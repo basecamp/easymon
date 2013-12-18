@@ -73,6 +73,7 @@ available at:
  * Semaphore
  * Traffic Enabled
  * Split ActiveRecord
+ * Http
  
 ###ActiveRecord
 `Easymon::ActiveRecordCheck` is a basic check that uses ActiveRecord to check the
@@ -146,3 +147,15 @@ We would check both it and `ActiveRecord::Base` like so (two lines for readabili
       [ActiveRecord::Base.connection, Easymon::Base.connection] 
     }
     Easymon::Repository.add("split-database", check)
+
+###Http
+`Easymon::HttpCheck` will check the return status of a HEAD request to a URL. This
+will make a request to port 9200 on localhost, which is where you might have
+Elasticsearch running:
+
+    Easymon::HttpCheck.new("http://localhost:9200")
+
+Typically, we'll read an elasticsearch config off disk, and use the URL like so:
+
+    config = YAML.load_file(Rails.root.join("config/elasticsearch.yml"))[Rails.env].symbolize_keys
+    Easymon::HttpCheck.new(config[:url])
