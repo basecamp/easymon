@@ -8,19 +8,11 @@ Currently Rails 3+.
 
 ## Installation
 
-Not sure yet. This might work:
-
-Add to Gemfile:
+Add to Gemfile and bundle!:
 
     gem 'easymon'
-
-Execute:
-
     bundle
 
-Or maybe just:
-
-    gem install easymon
 
 ##Usage
 Ok, you'll need to add an initializer for this to do anything. In 
@@ -29,9 +21,24 @@ Ok, you'll need to add an initializer for this to do anything. In
     Easymon::Repository.add("application-database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
 This will register a check called "application-database" for use.
 
-Next, add `mount Easymon::Engine => "/up"` to your `config/routes.rb`.
-When you visit `/up/application-database` or as a part of your overall 
-checklist at `/up`.
+Next, we need to add the routes to your application. Depending on the rails version,
+this is done one of two ways:
+
+###Rails 2.3.x & 3.0
+Add `Easymon.routes(map)` to your `config/routes.rb`.  This will put the Easymon
+routes under `/up`.  If you want Easymon mounted somewhere other than `/up`, use
+`Easymon.routes(map, "/monitoring")`.  That would put the Easymon paths under 
+`/monitoring`.
+
+###Rails 3.1+
+Since we now have mountable engines, use the standard syntax, adding 
+`mount Easymon::Engine => "/up"` to your `config/routes.rb`.
+
+
+Now, you can run your entire checklist by visiting `/up`, or wherever you have
+mounted the application.  If you want to just test the single check, go to 
+`/up/application-database`, and only the check named `application-database` will
+be run.
 
 ###Critical Checks
 If you have several services that are critical to your app, and others that
@@ -149,9 +156,9 @@ We would check both it and `ActiveRecord::Base` like so (two lines for readabili
     Easymon::Repository.add("split-database", check)
 
 ###Http
-`Easymon::HttpCheck` will check the return status of a HEAD request to a URL. This
-will make a request to port 9200 on localhost, which is where you might have
-Elasticsearch running:
+`Easymon::HttpCheck` will check the return status of a HEAD request to a URL. Great
+for checking service endpoint availability! The following will make a request to 
+port 9200 on localhost, which is where you might have Elasticsearch running:
 
     Easymon::HttpCheck.new("http://localhost:9200")
 

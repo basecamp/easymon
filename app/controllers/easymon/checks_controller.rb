@@ -4,8 +4,8 @@ module Easymon
   class ChecksController < ApplicationController
     rescue_from Easymon::NoSuchCheck do |e|
       respond_to do |format|
-         format.any(:text, :html) { render text: e.message, status: :not_found }
-         format.json { render json: e.message, status: :not_found }
+         format.any(:text, :html) { render :text => e.message, :status => :not_found }
+         format.json { render :json => e.message, :status => :not_found }
       end
     end
     
@@ -24,8 +24,8 @@ module Easymon
       end
 
       respond_to do |format|
-         format.any(:text, :html) { render text: message, status: response_status }
-         format.json { render json: checklist, status: response_status }
+         format.any(:text, :html) { render :text => message, :status => response_status }
+         format.json { render :json => checklist, :status => response_status }
       end
     end
 
@@ -36,8 +36,8 @@ module Easymon
       message = "#{params[:check]}: #{result.message}"
       
       respond_to do |format|
-         format.any(:text, :html) { render text: message, status: result.response_status }
-         format.json { render json: message, status: result.response_status }
+         format.any(:text, :html) { render :text => message, :status => result.response_status }
+         format.json { render :json => message, :status => result.response_status }
       end
     end
   end

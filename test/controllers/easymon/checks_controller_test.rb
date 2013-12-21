@@ -34,7 +34,7 @@ module Easymon
     
     test "show should return with :ok and success text when the check passes" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
-      get :show, use_route: :easymon, :check => "database"
+      get :show, use_route: :easymon, check: "database"
       assert_response :success
       assert response.body.include?("database: Up"), "Response should include message text, got #{response.body}"
     end
@@ -43,11 +43,17 @@ module Easymon
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
       ActiveRecord::Base.connection.stubs(:select_value).raises("boom")
       
-      get :show, use_route: :easymon, :check => "database"
+      get :show, use_route: :easymon, check: "database"
       
       assert_response :service_unavailable
       assert response.body.include?("database: Down"), "Response should include failure text, got #{response.body}"
     end
-
+    
+    test "show should return with :not_found if the check is not found" do
+      Easymon::Repository.names.each {|name| Easymon::Repository.remove(name)}
+      
+      get :show, use_route: :easymon, check: "database"
+      assert_response :not_found
+    end
   end
 end

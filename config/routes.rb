@@ -1,5 +1,6 @@
 # use `mount Easymon::Engine => "/up"` in the host application routes.rb
-Easymon::Engine.routes.draw do
-  root to: "checks#index"
-  get ":check", to: "checks#show"
+if Gem::Version.new(Rails.version) >= Gem::Version.new('3.1')
+  Easymon::Engine.routes.draw do
+    Easymon.routes(self)
+  end
 end

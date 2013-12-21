@@ -1,5 +1,3 @@
-require "dalli"
-
 module Easymon
   class MemcachedCheck
     attr_accessor :cache
