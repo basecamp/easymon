@@ -7,9 +7,8 @@ module Easymon
       if repository.include?(name)
         return repository.fetch(name)
       else
-        raise NoSuchCheck, "No check named '#{name}'"
+        critical.fetch(name)
       end
-      critical.fetch(name)
     rescue KeyError
       raise NoSuchCheck, "No check named '#{name}'"
     end
