@@ -41,4 +41,18 @@ class RepositoryTest < ActiveSupport::TestCase
     
     assert Easymon::Repository.repository.include?("critical")
   end
+  
+  test "fetches a check by name" do
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
+    check = Easymon::Repository.fetch("database")
+    
+    assert check.instance_of? Easymon::ActiveRecordCheck
+  end
+  
+  test "fetches a critical check by name" do
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), true)
+    check = Easymon::Repository.fetch("database")
+    
+    assert check.instance_of? Easymon::ActiveRecordCheck
+  end
 end
