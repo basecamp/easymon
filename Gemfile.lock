@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     easymon (0.0.2)
-      rails (~> 3.2.16)
       redis
       rest-client
 
@@ -106,3 +105,4 @@ DEPENDENCIES
   jquery-rails
   mocha
   mysql2
+  rails
