@@ -28,7 +28,8 @@ this is done one of two ways:
 Add `Easymon.routes(map)` to your `config/routes.rb`.  This will put the Easymon
 routes under `/up`.  If you want Easymon mounted somewhere other than `/up`, use
 `Easymon.routes(map, "/monitoring")`.  That would put the Easymon paths under 
-`/monitoring`.
+`/monitoring`.  For Rails 3.0, the default routes file does not provide `map`, so
+use `Easymon.routes(self)` instead.
 
 ###Rails 3.1+
 Since we now have mountable engines, use the standard syntax, adding 

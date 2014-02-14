@@ -2,6 +2,7 @@ if Gem::Version.new(Rails.version) >= Gem::Version.new("3.0")
   require "easymon/engine"
 end
 
+
 require "easymon/checklist"
 require "easymon/repository"
 require "easymon/result"
@@ -48,8 +49,8 @@ module Easymon
     elsif Easymon.rails30?
       # Greater than 3.0, but less than 3.1
       mapper.instance_eval do
-        get "#{path}", :to => "easymon/checks#index"
-        get "#{path}/:check", :to => "easymon/checks#show"
+        get "#{path}" => 'easymon/checks#index'
+        get "#{path}/:check" => 'easymon/checks#show'
       end
     elsif Easymon.mountable_engine?
       # Rails 3.1+
