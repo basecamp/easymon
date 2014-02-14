@@ -36,6 +36,11 @@ module Easymon
   def self.routes(mapper, path = "/up")
     if Easymon.rails2?
       # Rails 2.3.x (anything less than 3, really)
+      $:.unshift File.expand_path(File.join(
+        File.dirname(__FILE__),
+        "..","app","controllers"))
+      require 'easymon/checks_controller'
+
       mapper.instance_eval do
         connect "#{path}", :controller => "easymon/checks", :action => "index"
         connect "#{path}/:check", :controller => "easymon/checks", :action => "show"
