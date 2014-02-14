@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rest-client"
   s.add_dependency "redis"
 
-  s.add_development_dependency "rails"
+  s.add_development_dependency "rails", ['>= 3.0', '>= 4.0', '>= 2.3.18']
   s.add_development_dependency "mysql2"
   s.add_development_dependency "mocha"
   s.add_development_dependency "dalli"
