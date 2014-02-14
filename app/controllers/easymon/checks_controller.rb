@@ -36,7 +36,7 @@ module Easymon
       message = "#{params[:check]}: #{result.message}"
       
       respond_to do |format|
-         format.any(:text, :html) { render :text => message, :status => result.response_status }
+         format.any(:text, :html) { render :text => result.message, :status => result.response_status }
          format.json { render :json => message, :status => result.response_status }
       end
     end

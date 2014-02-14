@@ -36,7 +36,7 @@ module Easymon
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
       get :show, use_route: :easymon, check: "database"
       assert_response :success
-      assert response.body.include?("database: Up"), "Response should include message text, got #{response.body}"
+      assert response.body.include?("Up"), "Response should include message text, got #{response.body}"
     end
     
     test "show should return with :service_unavailable and failure text when the check fails" do
@@ -46,7 +46,7 @@ module Easymon
       get :show, use_route: :easymon, check: "database"
       
       assert_response :service_unavailable
-      assert response.body.include?("database: Down"), "Response should include failure text, got #{response.body}"
+      assert response.body.include?("Down"), "Response should include failure text, got #{response.body}"
     end
     
     test "show should return with :not_found if the check is not found" do
