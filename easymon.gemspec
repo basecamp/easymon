@@ -14,15 +14,16 @@ Gem::Specification.new do |s|
   s.description = "Enables your monitoring infrastructure to easily query the
                    status of your app server's health.  Provides routes under
                    /up."
+  s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rest-client"
-  s.add_dependency "redis"
+  s.add_dependency "rest-client", "~> 1.6"
+  s.add_dependency "redis", "~> 3.0"
 
-  s.add_development_dependency "rails", '>= 2.3.18'
-  s.add_development_dependency "mysql2"
-  s.add_development_dependency "mocha"
-  s.add_development_dependency "dalli"
+  s.add_development_dependency "rails", ['>= 3.0', '>= 4.0', '>= 2.3.18']
+  s.add_development_dependency "mysql2", "~> 0.3"
+  s.add_development_dependency "mocha", "~> 1.1"
+  s.add_development_dependency "dalli", "~> 2.7"
 end
