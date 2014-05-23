@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rest-client", "~> 1.6"
-  s.add_dependency "redis", "~> 3.0"
+  s.add_dependency "redis"
 
   s.add_development_dependency "rails", ['>= 3.0', '>= 4.0', '>= 2.3.18']
   s.add_development_dependency "mysql2", "~> 0.3"
