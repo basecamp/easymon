@@ -29,11 +29,16 @@ class ChecklistTest < ActiveSupport::TestCase
     end
   end
   
-  test "#to_json returns a valid json representation of the checklist" do
+  test "#timing is a sum of all check results" do
     checklist = Easymon::Repository.all
+    # Fake some results
+    checklist.results = %w(one two three).inject({}) do |hash, name|
+      timing = 1.2
+      hash[name] = Easymon::Result.new([name, "dummy message"], timing)
+      hash
+    end
     
-    checklist.check
-    assert_equal "[{\"success\":true,\"message\":\"Up\",\"name\":\"database\"},{\"success\":true,\"message\":\"Up\",\"name\":\"redis\"},{\"success\":true,\"message\":\"Up\",\"name\":\"memcached\"}]", checklist.to_json
+    assert_in_delta 3.6, checklist.timing, 0.01
   end
   
   test "#response_status returns :ok when all checks pass" do

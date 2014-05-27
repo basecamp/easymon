@@ -1,4 +1,5 @@
 require_dependency "easymon/application_controller"
+require "benchmark"
 
 module Easymon
   class ChecksController < ApplicationController
@@ -37,13 +38,13 @@ module Easymon
 
     def show
       check = Easymon::Repository.fetch(params[:check])
-      result = Easymon::Result.new(check.check)
-      
-      message = "#{params[:check]}: #{result.message}"
+      check_result = []
+      timing = Benchmark.realtime { check_result = check.check }
+      result = Easymon::Result.new(check_result, timing)
       
       respond_to do |format|
-         format.any(:text, :html) { render :text => result.message, :status => result.response_status }
-         format.json { render :json => message, :status => result.response_status }
+         format.any(:text, :html) { render :text => result, :status => result.response_status }
+         format.json { render :json => result, :status => result.response_status }
       end
     end
 

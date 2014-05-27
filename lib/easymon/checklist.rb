@@ -1,3 +1,5 @@
+require 'benchmark'
+
 module Easymon
   class Checklist
     extend Forwardable
@@ -13,10 +15,16 @@ module Easymon
     
     def check
       self.results = items.inject({}) do |hash, (name, check)|
-        hash[name] = Easymon::Result.new(check.check)
+        check_result = []
+        timing = Benchmark.realtime { check_result = check.check }
+        hash[name] = Easymon::Result.new(check_result, timing)
         hash
       end
       [self.success?, self.to_s]
+    end
+    
+    def timing
+      results.values.map{|r| r.timing}.reduce(:+)
     end
     
     def to_text
@@ -24,7 +32,8 @@ module Easymon
     end
     
     def to_s
-      self.results.map{|name, result| "#{name}: #{result.to_s}"}.join("\n")
+      self.results.map{|name, result| "#{name}: #{result.to_s}"}.join("\n") + 
+      "\n - Total Time - " + self.timing.to_s + "s"
     end
     
     def to_json(*args)
