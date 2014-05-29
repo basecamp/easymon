@@ -24,7 +24,7 @@ module Easymon
     end
     
     def timing
-      results.values.map{|r| r.timing}.reduce(:+)
+      results.values.map{|r| r.timing}.inject(0, :+)
     end
     
     def to_text

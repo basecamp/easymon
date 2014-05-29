@@ -19,7 +19,7 @@ module Easymon
     end
     
     def to_s
-        "#{message} - #{timing.to_s}s"
+        "#{message} - #{Easymon.timing_to_ms(timing)}ms"
     end
     
     def to_json(options = {})
@@ -27,8 +27,7 @@ module Easymon
     end
     
     def to_hash
-      {:success => success, :message => message, :timing => timing}
+      {:success => success, :message => message, :timing => timing_to_ms(timing)}
     end
-    
   end
 end

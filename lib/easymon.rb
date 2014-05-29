@@ -61,4 +61,8 @@ module Easymon
       end
     end
   end
+  
+  def self.timing_to_ms(timing = 0)
+    sprintf("%.3f", (timing * 1000))
+  end
 end
