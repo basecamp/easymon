@@ -32,13 +32,13 @@ module Easymon
     end
     
     def to_s
-      self.results.map{|name, result| "#{name}: #{result.to_s}"}.join("\n") + 
-      "\n - Total Time - " + self.timing.to_s + "s"
+      results.map{|name, result| "#{name}: #{result.to_s}"}.join("\n") + 
+      "\n - Total Time - " + Easymon.timing_to_ms(self.timing) + "ms"
     end
     
     def to_json(*args)
       combined = []
-      self.results.each do |name, result|
+      results.each do |name, result|
         combined << result.to_hash.merge({"name" => name})
       end
       combined.to_json
