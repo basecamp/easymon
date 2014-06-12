@@ -223,6 +223,10 @@ Here's the most direct way to get your work merged into the project:
 If you're going to make a major change ask first to maje sure it's in line with 
 the project goals.
 
+## To Do
+
+See the issues page. :smile:
+
 ## Authors
 
 * [Nathan Anderson](mailto:andnat@gmail.com)
