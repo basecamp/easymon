@@ -22,12 +22,12 @@ module Easymon
         "#{message} - #{Easymon.timing_to_ms(timing)}ms"
     end
     
-    def to_json(options = {})
-      to_hash.to_json
+    def as_json(options = {})
+      to_hash
     end
     
     def to_hash
-      {:success => success, :message => message, :timing => timing_to_ms(timing)}
+      {:success => success, :message => message, :timing => Easymon.timing_to_ms(timing)}
     end
   end
 end

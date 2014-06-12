@@ -36,12 +36,16 @@ module Easymon
       "\n - Total Time - " + Easymon.timing_to_ms(self.timing) + "ms"
     end
     
-    def to_json(*args)
-      combined = []
+    def to_hash
+      combined = {}
       results.each do |name, result|
-        combined << result.to_hash.merge({"name" => name})
+        combined[name] = result.to_hash
       end
-      combined.to_json
+      combined
+    end
+    
+    def as_json(*args)
+      to_hash
     end
     
     def success?

@@ -34,11 +34,32 @@ module Easymon
       assert response.body.include?("OK"), "Should include 'OK' in response body"
     end
     
+    test "index returns valid json" do
+      Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
+      get :index, :use_route => :easymon, :format => :json
+      
+      json = JSON.parse(response.body)
+
+      assert json.has_key?("database")
+      assert_equal "Up", json["database"]["message"]
+      assert_equal 1, json.keys.count
+    end
+    
     test "show when the check passes" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
       get :show, :use_route => :easymon, check: "database"
       assert_response :success
       assert response.body.include?("Up"), "Response should include message text, got #{response.body}"
+    end
+    
+    test "show json when the check passes" do
+      Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
+      get :show, :use_route => :easymon, :check => "database", :format => :json
+      
+      json = JSON.parse(response.body)
+      
+      assert json.has_key?("message")
+      assert_equal "Up", json["message"]
     end
     
     test "show when the check fails" do
