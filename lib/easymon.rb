@@ -44,19 +44,20 @@ module Easymon
       require 'easymon/checks_controller'
 
       mapper.instance_eval do
-        connect "#{path}", :controller => "easymon/checks", :action => "index"
-        connect "#{path}/:check", :controller => "easymon/checks", :action => "show"
+        connect "#{path}.:format", :controller => "easymon/checks", :action => "index"
+        connect "#{path}/:check.:format", :controller => "easymon/checks", :action => "show"
       end
     elsif Easymon.rails30?
       # Greater than 3.0, but less than 3.1
       mapper.instance_eval do
-        get "#{path}" => 'easymon/checks#index'
+        get "#{path}(.:format)" => 'easymon/checks#index'
         get "#{path}/:check" => 'easymon/checks#show'
       end
     elsif Easymon.mountable_engine?
       # Rails 3.1+
       mapper.instance_eval do
-        get "/", :to => "checks#index"
+        get "/(.:format)", :to => "checks#index"
+        root :to => "checks#index"
         get "/:check", :to => "checks#show"
       end
     end
