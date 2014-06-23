@@ -6,7 +6,7 @@ application database, a memcached connection, or a redis instance.  These test
 results can be used by a load balancer to determine the general health and
 viability of the node your application is running on.
 
-It's packaged up as a rails engine for 3.1 and greater, and a plugin for 2.3 - 
+It's packaged up as a rails engine for 3.1 and greater, and a plugin for 2.3 -
 3.0.
 
 ## History
@@ -23,7 +23,7 @@ gem 'easymon'
 ````
 
 ## Usage
-To get started, you'll need to add an initializer for this to do anything. 
+To get started, you'll need to add an initializer for this to do anything.
 In `config/initializers/easymon.rb`:
 
 ````ruby
@@ -136,7 +136,7 @@ Redis.new, it doesn't care where the config comes from.
 
 ### Memcached
 `Easymon::MemcachedCheck` is a basic check that will write and then read a key
-from the cache.  It expects a cache instance to check, so it could be as easy 
+from the cache.  It expects a cache instance to check, so it could be as easy
 as:
 
 ````ruby
@@ -200,9 +200,9 @@ Easymon::Repository.add("split-database", check)
 ````
 
 ### Http
-`Easymon::HttpCheck` will check the return status of a HEAD request to a URL. 
-Great for checking service endpoint availability! The following will make a 
-request to port 9200 on localhost, which is where you might have Elasticsearch 
+`Easymon::HttpCheck` will check the return status of a HEAD request to a URL.
+Great for checking service endpoint availability! The following will make a
+request to port 9200 on localhost, which is where you might have Elasticsearch
 running:
 
 ````ruby

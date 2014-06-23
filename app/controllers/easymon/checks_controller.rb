@@ -9,16 +9,16 @@ module Easymon
          format.json { render :json => e.message, :status => :not_found }
       end
     end
-    
+
     def index
       checklist = Easymon::Repository.all
       checklist.check
-      
+
       message = "No Checks Defined"
-      
+
       response_status = checklist.response_status
       message = checklist.to_s unless checklist.empty?
-      
+
       unless checklist.empty?
         # override response_status if we have a "critical" checklist
         unless Easymon::Repository.critical.empty?

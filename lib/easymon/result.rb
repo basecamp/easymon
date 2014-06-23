@@ -11,7 +11,7 @@ module Easymon
       self.timing = timing
       self.critical = is_critical
     end
-    
+
     def success?
       success
     end
@@ -23,15 +23,15 @@ module Easymon
     def response_status
       success? ? :ok : :service_unavailable
     end
-    
+
     def to_s
         "#{message} - #{Easymon.timing_to_ms(timing)}ms"
     end
-    
+
     def as_json(options = {})
       to_hash
     end
-    
+
     def to_hash
       {:success => success, :message => message, :timing => Easymon.timing_to_ms(timing), :critical => critical}
     end
