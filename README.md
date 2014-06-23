@@ -87,7 +87,16 @@ individually available at:
  * `/up/memcached`
  * `/up/critical` - Runs both the application-database and redis checks.
 
-## Included Checks
+## Checks
+
+A check can be any ruby code that responds_to? a #check method that returns a
+two element array. The first element is the result of executing the check and
+should be true or false. The second element is the message describing what's
+going on.  The array would look something like this: `[true, "Up"]` in the
+case of a successful check or `[false, "Timeout"]` in the case of a failed
+check.
+
+### Included Checks
 
  * ActiveRecord
  * Redis
@@ -123,7 +132,7 @@ Easymon::RedisCheck.new(
 This is the most visually complex test to instantiate, but it's only because
 we're loading the config from disk and getting the config block that matches
 the Rails.env in one line.  As long as you pass a hash that can be used by
-Redis.new.
+Redis.new, it doesn't care where the config comes from.
 
 ### Memcached
 `Easymon::MemcachedCheck` is a basic check that will write and then read a key
@@ -153,6 +162,7 @@ to the node.
 ````ruby
 Easymon::TrafficEnabledCheck.new("enable-traffic")
 ````
+This is a subclass of the Semaphore check mentioned above.
 
 ###Split ActiveRecord
 `Easymon::SplitActiveRecordCheck` is the most complicated check, as it's not
@@ -220,7 +230,7 @@ Here's the most direct way to get your work merged into the project:
 8. Push the branch up
 9. Send a pull request for your branch
 
-If you're going to make a major change ask first to maje sure it's in line with 
+If you're going to make a major change ask first to make sure it's in line with
 the project goals.
 
 ## To Do

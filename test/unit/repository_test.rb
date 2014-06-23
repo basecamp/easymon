@@ -7,7 +7,7 @@ class RepositoryTest < ActiveSupport::TestCase
     check = Easymon::Repository.fetch("database")
     
     assert_equal 1, Easymon::Repository.repository.size, Easymon::Repository.repository.inspect
-    assert check.instance_of? Easymon::ActiveRecordCheck
+    assert check[:check].instance_of? Easymon::ActiveRecordCheck
   end
   
   test "we can remove a check from the repository" do
@@ -31,28 +31,22 @@ class RepositoryTest < ActiveSupport::TestCase
   end
   
   test "adds checks marked critical to the critical checklist" do
-    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), true)
-    
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), :critical)
+
     assert Easymon::Repository.critical.include?("database")
   end
-  
-  test "adds a check to the repository for the critical checklist" do
-    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), true)
-    
-    assert Easymon::Repository.repository.include?("critical")
-  end
-  
+
   test "fetches a check by name" do
     Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
     check = Easymon::Repository.fetch("database")
-    
-    assert check.instance_of? Easymon::ActiveRecordCheck
+
+    assert check[:check].instance_of? Easymon::ActiveRecordCheck
   end
   
   test "fetches a critical check by name" do
-    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), true)
+    Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), :critical)
     check = Easymon::Repository.fetch("database")
-    
-    assert check.instance_of? Easymon::ActiveRecordCheck
+
+    assert check[:check].instance_of? Easymon::ActiveRecordCheck
   end
 end

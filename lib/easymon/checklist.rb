@@ -16,8 +16,8 @@ module Easymon
     def check
       self.results = items.inject({}) do |hash, (name, check)|
         check_result = []
-        timing = Benchmark.realtime { check_result = check.check }
-        hash[name] = Easymon::Result.new(check_result, timing)
+        timing = Benchmark.realtime { check_result = check[:check].check }
+        hash[name] = Easymon::Result.new(check_result, timing, check[:critical])
         hash
       end
       [self.success?, self.to_s]
@@ -32,12 +32,12 @@ module Easymon
     end
     
     def to_s
-      results.map{|name, result| "#{name}: #{result.to_s}"}.join("\n") + 
+      results.map{|name, result| "#{name}: #{result.to_s}"}.join("\n") +
       "\n - Total Time - " + Easymon.timing_to_ms(self.timing) + "ms"
     end
     
     def to_hash
-      combined = {}
+      combined = {:timing => Easymon.timing_to_ms(timing)}
       results.each do |name, result|
         combined[name] = result.to_hash
       end

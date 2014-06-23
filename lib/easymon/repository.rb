@@ -1,14 +1,9 @@
 module Easymon
   class Repository
     attr_reader :repository
-    attr_reader :critical
-    
+
     def self.fetch(name)
-      if repository.include?(name)
-        return repository.fetch(name)
-      else
-        critical.fetch(name)
-      end
+      return repository.fetch(name)
     rescue IndexError
       raise NoSuchCheck, "No check named '#{name}'"
     end
@@ -18,21 +13,16 @@ module Easymon
     end
     
     def self.names
-      repository.keys + critical.keys
+      repository.keys
     end
     
     def self.add(name, check, is_critical=false)
-      if is_critical
-        critical[name] = check
-        repository["critical"] = Checklist.new critical
-      else
-        repository[name] = check
-      end
+      entry = {:check => check, :critical => is_critical ? true : false}
+      repository[name] = entry
     end
     
     def self.remove(name)
       repository.delete(name)
-      critical.delete(name)
     end
     
     def self.repository
@@ -40,7 +30,7 @@ module Easymon
     end
     
     def self.critical
-      @critical ||= {}
+      repository.map{ |name, entry| name if entry[:critical] }.compact
     end
   end
 end

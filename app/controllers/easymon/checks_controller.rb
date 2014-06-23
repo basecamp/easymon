@@ -21,10 +21,11 @@ module Easymon
       
       unless checklist.empty?
         # override response_status if we have a "critical" checklist
-        if checklist.include?("critical")
-          critical_checklist = checklist.fetch("critical")
-          response_status = critical_checklist.response_status
-          message = add_prefix(critical_checklist.success?, message)
+        unless Easymon::Repository.critical.empty?
+          critical_checks = checklist.items.map{|name, entry| checklist.results[name] if Easymon::Repository.critical.include?(name)}.compact
+          critical_success = critical_checks.all?(&:success?)
+          response_status = critical_success ? :ok : :service_unavailable
+          message = add_prefix(critical_success, message)
         else
           message = add_prefix(checklist.success?, message)
         end
@@ -37,14 +38,40 @@ module Easymon
     end
 
     def show
-      check = Easymon::Repository.fetch(params[:check])
       check_result = []
-      timing = Benchmark.realtime { check_result = check.check }
-      result = Easymon::Result.new(check_result, timing)
-      
+      is_critical = params[:check] == "critical"
+
+      if is_critical
+        # Build the critical checklist
+        checklist_proto = {}
+        Easymon::Repository.critical.each do |name|
+          checklist_proto[name] = Easymon::Repository.fetch(name)
+        end
+        checklist = Easymon::Checklist.new checklist_proto
+        checklist.check
+      else
+        check = Easymon::Repository.fetch(params[:check])
+        timing = Benchmark.realtime { check_result = check[:check].check }
+        result = Easymon::Result.new(check_result, timing, check[:critical])
+      end
+
+
+
       respond_to do |format|
-         format.any(:text, :html) { render :text => result, :status => result.response_status }
-         format.json { render :json => result, :status => result.response_status }
+        format.any(:text, :html) do
+          if is_critical
+            render :text => add_prefix(checklist.success?, checklist), :status => checklist.response_status
+          else
+            render :text => result, :status => result.response_status
+          end
+        end
+        format.json do
+          if is_critical
+            render :json => checklist, :status => checklist.response_status
+          else
+            render :json => result, :status => result.response_status
+          end
+        end
       end
     end
 

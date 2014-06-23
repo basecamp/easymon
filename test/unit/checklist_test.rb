@@ -70,7 +70,7 @@ class ChecklistTest < ActiveSupport::TestCase
   
   test "cat fetch a check by name" do
     checklist = Easymon::Repository.all
-    
-    assert checklist.fetch("database").instance_of? Easymon::ActiveRecordCheck
+
+    assert checklist.fetch("database")[:check].instance_of? Easymon::ActiveRecordCheck
   end
 end

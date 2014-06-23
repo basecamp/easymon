@@ -16,6 +16,16 @@ module Easymon
       assert response.body.include?("OK"), "Should include 'OK' in response body"
     end
 
+    test "index when a check fails" do
+      Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
+      Easymon::Repository.add("redis", Easymon::RedisCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"))[Rails.env].symbolize_keys))
+      Redis.any_instance.stubs(:ping).raises("boom")
+      get :index, use_route: :easymon
+      assert_response :service_unavailable
+      assert response.body.include?("redis: Down"), "Should include failure text, got #{response.body}"
+      assert response.body.include?("DOWN"), "Should include 'OK' in response body"
+    end
+
     test "index when a critical check fails" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), :critical)
       ActiveRecord::Base.connection.stubs(:select_value).raises("boom")
