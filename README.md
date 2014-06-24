@@ -6,7 +6,7 @@ application database, a memcached connection, or a redis instance.  These test
 results can be used by a load balancer to determine the general health and
 viability of the node your application is running on.
 
-It's packaged up as a rails engine for 3.1 and greater, and a plugin for 2.3 - 
+It's packaged up as a rails engine for 3.1 and greater, and a plugin for 2.3 -
 3.0.
 
 ## History
@@ -23,7 +23,7 @@ gem 'easymon'
 ````
 
 ## Usage
-To get started, you'll need to add an initializer for this to do anything. 
+To get started, you'll need to add an initializer for this to do anything.
 In `config/initializers/easymon.rb`:
 
 ````ruby
@@ -87,7 +87,16 @@ individually available at:
  * `/up/memcached`
  * `/up/critical` - Runs both the application-database and redis checks.
 
-## Included Checks
+## Checks
+
+A check can be any ruby code that responds_to? a #check method that returns a
+two element array. The first element is the result of executing the check and
+should be true or false. The second element is the message describing what's
+going on.  The array would look something like this: `[true, "Up"]` in the
+case of a successful check or `[false, "Timeout"]` in the case of a failed
+check.
+
+### Included Checks
 
  * ActiveRecord
  * Redis
@@ -123,11 +132,11 @@ Easymon::RedisCheck.new(
 This is the most visually complex test to instantiate, but it's only because
 we're loading the config from disk and getting the config block that matches
 the Rails.env in one line.  As long as you pass a hash that can be used by
-Redis.new.
+Redis.new, it doesn't care where the config comes from.
 
 ### Memcached
 `Easymon::MemcachedCheck` is a basic check that will write and then read a key
-from the cache.  It expects a cache instance to check, so it could be as easy 
+from the cache.  It expects a cache instance to check, so it could be as easy
 as:
 
 ````ruby
@@ -153,6 +162,7 @@ to the node.
 ````ruby
 Easymon::TrafficEnabledCheck.new("enable-traffic")
 ````
+This is a subclass of the Semaphore check mentioned above.
 
 ###Split ActiveRecord
 `Easymon::SplitActiveRecordCheck` is the most complicated check, as it's not
@@ -190,9 +200,9 @@ Easymon::Repository.add("split-database", check)
 ````
 
 ### Http
-`Easymon::HttpCheck` will check the return status of a HEAD request to a URL. 
-Great for checking service endpoint availability! The following will make a 
-request to port 9200 on localhost, which is where you might have Elasticsearch 
+`Easymon::HttpCheck` will check the return status of a HEAD request to a URL.
+Great for checking service endpoint availability! The following will make a
+request to port 9200 on localhost, which is where you might have Elasticsearch
 running:
 
 ````ruby
@@ -220,7 +230,7 @@ Here's the most direct way to get your work merged into the project:
 8. Push the branch up
 9. Send a pull request for your branch
 
-If you're going to make a major change ask first to maje sure it's in line with 
+If you're going to make a major change ask first to make sure it's in line with
 the project goals.
 
 ## To Do
