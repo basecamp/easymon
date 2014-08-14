@@ -3,6 +3,8 @@ require 'test_helper'
 class MemcachedCheckTest < ActiveSupport::TestCase
   
   test "#run sets success conditions on successful run" do
+    Rails.cache.stubs(:write).returns(true)
+    Rails.cache.stubs(:read).returns(1)
     check = Easymon::MemcachedCheck.new(Rails.cache)
     results = check.check
     
