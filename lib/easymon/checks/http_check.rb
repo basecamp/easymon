@@ -20,7 +20,11 @@ module Easymon
     
     private
       def http_up?(config_url)
-        response = RestClient.head(config_url)
+        response = RestClient::Request.execute(
+                                      :method => :head, 
+                                      :url => config_url,
+                                      :timeout => 5,
+                                      :open_timeout => 5)
         true
       rescue Exception
         false

@@ -3,6 +3,7 @@ require 'test_helper'
 class RedisCheckTest < ActiveSupport::TestCase
   
   test "#run sets success conditions on successful run" do
+    Redis.any_instance.stubs(:ping).returns("PONG")
     check = create_check
     results = check.check
     

@@ -21,6 +21,8 @@ class ChecklistTest < ActiveSupport::TestCase
   end
 
   test "#to_s returns a valid representation of the checklist" do
+    Easymon::Testing.stub_service_success(:redis)
+    Easymon::Testing.stub_service_success(:memcached)
     checklist = Easymon::Repository.all
 
     checklist.check
@@ -42,6 +44,8 @@ class ChecklistTest < ActiveSupport::TestCase
   end
 
   test "#response_status returns :ok when all checks pass" do
+    Easymon::Testing.stub_service_success(:redis)
+    Easymon::Testing.stub_service_success(:memcached)
     checklist = Easymon::Repository.all
 
     checklist.check
