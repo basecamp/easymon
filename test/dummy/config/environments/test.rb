@@ -35,7 +35,7 @@ Dummy::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
   
-  config.cache_store = :mem_cache_store, YAML.load_file(Rails.root.join('config/memcached.yml'))[Rails.env], { timeout: 1, namespace: "easymon-testing" }
+  config.cache_store = :memcached_store, Memcached::Rails.new(YAML.load_file(Rails.root.join('config/memcached.yml'))[Rails.env], timeout: 1, namespace: "easymon-testing")
 
   config.eager_load = true
 end

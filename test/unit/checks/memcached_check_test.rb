@@ -30,8 +30,8 @@ class MemcachedCheckTest < ActiveSupport::TestCase
   end
 
   test "fails when passed a cache with no servers" do
-    dalli = Dalli::Client.new('', {:namespace => "easymon"})
-    check = Easymon::MemcachedCheck.new(dalli)
+    memcached_store = Memcached::Rails.new('', {:namespace => "easymon"})
+    check = Easymon::MemcachedCheck.new(memcached_store)
     results = check.check
 
     assert_equal("Down", results[1])
