@@ -8,7 +8,7 @@ Dummy::Application.configure do
   config.cache_classes = true
 
   # Configure static asset server for tests with Cache-Control for performance
-  config.serve_static_assets = true
+  config.serve_static_files = true
   config.static_cache_control = "public, max-age=3600"
 
   # Log error messages when you accidentally call methods on nil
@@ -34,8 +34,10 @@ Dummy::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
-  
+
   config.cache_store = :mem_cache_store, YAML.load_file(Rails.root.join('config/memcached.yml'))[Rails.env], { timeout: 1, namespace: "easymon-testing" }
 
   config.eager_load = true
+
+  config.active_support.test_order = :sorted
 end

@@ -31,3 +31,7 @@ class ActionController::TestCase
     Easymon::Repository.names.each {|name| Easymon::Repository.remove(name)}
   end
 end
+
+# setting up mocha *after* we load the test libraries as per
+# http://gofreerange.com/mocha/docs/
+require 'mocha/mini_test'
