@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rest-client", "~> 1.6"
+  s.add_dependency "rest-client"
   s.add_dependency "redis"
 
   s.add_development_dependency "rails", ['>= 3.0', '>= 4.0', '>= 2.3.18']
