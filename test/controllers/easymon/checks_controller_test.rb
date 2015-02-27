@@ -5,6 +5,7 @@ module Easymon
 
     setup do
       @routes = Easymon::Engine.routes
+      Easymon.authorize_with = nil
     end
 
     test "index when no checks are defined" do
@@ -91,5 +92,17 @@ module Easymon
       get :show, :check => "database"
       assert_response :not_found
     end
+
+    test "return 404 if not authorized" do
+      Easymon.authorize_with = Proc.new { false }
+
+      get :index
+      assert_response :not_found
+
+      get :show, :check => "database"
+      assert_response :not_found
+    end
+
+
   end
 end

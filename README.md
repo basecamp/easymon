@@ -87,6 +87,26 @@ individually available at:
  * `/up/memcached`
  * `/up/critical` - Runs both the application-database and redis checks.
 
+## Security
+
+You might not want to have this data available to everyone who hits your site,
+as it can expose both timing data and, depending on your check names, various
+bits of your infrastructure.  You can tell Easymon what addresses, headers,
+or whatever defines an authorized request by providing a block to
+`Easymon.authorize_with` that will be called with the current request object:
+
+```ruby
+Easymon.authorize_with = Proc.new { |request| request.remote_ip == '192.168.1.1'}
+# Or
+Easymon.authorize_with = Proc.new { |request|
+  request.headers["X-Forwarded-For"].nil?
+}
+```
+
+This will get run on each request, so keep it simple. (Actually, that's a good
+rule of thumb for any checks you write, too.  Remember, these are all in your
+main app request pipeline!)
+
 ## Checks
 
 A check can be any ruby code that responds_to? a #check method that returns a
