@@ -3,7 +3,8 @@ require "benchmark"
 
 module Easymon
   class ChecksController < ApplicationController
-    before_filter :authorized
+    before_filter :authorize_request
+
     rescue_from Easymon::NoSuchCheck do |e|
       respond_to do |format|
         format.any(:text, :html) { render_result e.message, :not_found }
@@ -84,8 +85,8 @@ module Easymon
         result ? "OK #{message}" : "DOWN #{message}"
       end
 
-      def authorized
-        head :not_found unless Easymon.authorized?(request)
+      def authorize_request
+        head :forbidden unless Easymon.authorized?(request)
       end
   end
 end

@@ -97,12 +97,10 @@ module Easymon
       Easymon.authorize_with = Proc.new { false }
 
       get :index
-      assert_response :not_found
+      assert_response :forbidden
 
       get :show, :check => "database"
-      assert_response :not_found
+      assert_response :forbidden
     end
-
-
   end
 end
