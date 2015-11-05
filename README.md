@@ -222,10 +222,18 @@ To run the tests, you need MySQL server installed and running, and accepting con
 on localhost:3306 for the `root` user with a blank password, as configured in
 [database.yml](./test/dummy/config/database.yml).
 
-Create the test databases by running:
+Create the MySQL test databases by running:
 
 ````
 bundle exec rake db:create
+````
+
+To run tests on PostgreSQL, you need the server installed and running, and accepting
+connections on localhost:5432 for the `dummy` user.  You can create the dummy user
+with the following command in `psql`:
+
+````sql
+CREATE USER dummy WITH PASSWORD 'dummy';
 ````
 
 Then run the tests with:
