@@ -216,6 +216,24 @@ config = YAML.load_file(Rails.root.join("config/elasticsearch.yml"))[Rails.env].
 Easymon::HttpCheck.new(config[:url])
 ````
 
+## Testing
+
+To run the tests, you need MySQL server installed and running, and accepting connections
+on localhost:3306 for the `root` user with a blank password, as configured in
+[database.yml](./test/dummy/config/database.yml).
+
+Create the test databases by running:
+
+````
+bundle exec rake db:create
+````
+
+Then run the tests with:
+
+````
+bundle exec rake test
+````
+
 ## How to contribute
 
 Here's the most direct way to get your work merged into the project:
