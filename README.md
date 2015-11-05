@@ -114,7 +114,7 @@ the availability of your main database.  It's usually invoked as such:
 Easymon::ActiveRecordCheck.new(ActiveRecord::Base)
 ````
 
-Internally, it compares `1 == klass.connection.select_value("SELECT 1=1").to_i`
+Internally, it compares `1 == klass.connection.select_value("SELECT 1").to_i`
 where klass is whatever class you passed to the check.  Usually this will be
 ActiveRecord::Base, but feel free to go crazy.
 
@@ -214,6 +214,32 @@ Typically, we'll read an elasticsearch config off disk, and use the URL like so:
 ````ruby
 config = YAML.load_file(Rails.root.join("config/elasticsearch.yml"))[Rails.env].symbolize_keys
 Easymon::HttpCheck.new(config[:url])
+````
+
+## Testing
+
+To run the tests, you need MySQL server installed and running, and accepting connections
+on localhost:3306 for the `root` user with a blank password, as configured in
+[database.yml](./test/dummy/config/database.yml).
+
+Create the MySQL test databases by running:
+
+````
+bundle exec rake db:create
+````
+
+To run tests on PostgreSQL, you need the server installed and running, and accepting
+connections on localhost:5432 for the `dummy` user.  You can create the dummy user
+with the following command in `psql`:
+
+````sql
+CREATE USER dummy WITH PASSWORD 'dummy';
+````
+
+Then run the tests with:
+
+````
+bundle exec rake test
 ````
 
 ## How to contribute

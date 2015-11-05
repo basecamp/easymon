@@ -32,3 +32,13 @@ production:
   username: root
   host: 127.0.0.1
   port: 3306
+
+# Database definitions for testing on PostgreSQL.
+pg_test:
+  adapter: postgresql
+  encoding: utf8
+  database: postgres
+  username: dummy
+  password: dummy
+  host: 127.0.0.1
+  port: 5432
