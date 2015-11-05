@@ -114,7 +114,7 @@ the availability of your main database.  It's usually invoked as such:
 Easymon::ActiveRecordCheck.new(ActiveRecord::Base)
 ````
 
-Internally, it compares `1 == klass.connection.select_value("SELECT 1=1").to_i`
+Internally, it compares `1 == klass.connection.select_value("SELECT 1").to_i`
 where klass is whatever class you passed to the check.  Usually this will be
 ActiveRecord::Base, but feel free to go crazy.
 

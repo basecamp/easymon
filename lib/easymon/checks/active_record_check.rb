@@ -18,7 +18,7 @@ module Easymon
     
     private
       def database_up?
-        1 == klass.connection.select_value("SELECT 1=1").to_i
+        1 == klass.connection.select_value("SELECT 1").to_i
       rescue
         false
       end
