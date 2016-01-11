@@ -3,6 +3,18 @@ require "benchmark"
 
 module Easymon
   class ChecksController < ApplicationController
+    # Rails 5+ deprecates `before_filter` in favor of `before_action`. Alias
+    # the latter for forward compatibility.
+    unless defined?(before_action)
+      class << self
+        %w( before ).each do |callback|
+          alias_method :"#{callback}_action", :"#{callback}_filter"
+        end
+      end
+    end
+
+    before_action :authorize_request
+
     rescue_from Easymon::NoSuchCheck do |e|
       respond_to do |format|
         format.any(:text, :html) { render_result e.message, :not_found }
@@ -81,6 +93,10 @@ module Easymon
 
       def add_prefix(result, message)
         result ? "OK #{message}" : "DOWN #{message}"
+      end
+
+      def authorize_request
+        head :forbidden unless Easymon.authorized?(request)
       end
   end
 end

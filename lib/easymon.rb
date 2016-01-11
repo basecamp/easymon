@@ -35,13 +35,17 @@ module Easymon
     Easymon.rails_version > Gem::Version.new("3.1")
   end
 
-  def self.newer_than?(version)
+  def self.rails_newer_than?(version)
     Easymon.rails_version > Gem::Version.new(version)
   end
 
   def self.has_render_plain?
     # Rails 4.1.0 introduced :plain, Rails 5 deprecated :text
-    Easymon.newer_than?("4.1.0.beta")
+    Easymon.rails_newer_than?("4.1.0.beta")
+  end
+
+  def self.has_before_action?
+    Easymon.rails_newer_than?("4.0.0.beta")
   end
 
   def self.routes(mapper, path = "/up")
@@ -74,5 +78,13 @@ module Easymon
 
   def self.timing_to_ms(timing = 0)
     sprintf("%.3f", (timing * 1000))
+  end
+
+  def self.authorize_with=(block)
+    @authorize_with = block
+  end
+
+  def self.authorized?(request)
+    @authorize_with.nil? ? true : @authorize_with.call(request)
   end
 end
