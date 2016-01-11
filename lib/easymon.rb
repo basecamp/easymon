@@ -35,6 +35,15 @@ module Easymon
     Easymon.rails_version > Gem::Version.new("3.1")
   end
 
+  def self.newer_than?(version)
+    Easymon.rails_version > Gem::Version.new(version)
+  end
+
+  def self.has_render_plain?
+    # Rails 4.1.0 introduced :plain, Rails 5 deprecated :text
+    Easymon.newer_than?("4.1.0.beta")
+  end
+
   def self.routes(mapper, path = "/up")
     if Easymon.rails2?
       # Rails 2.3.x (anything less than 3, really)
