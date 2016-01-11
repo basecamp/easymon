@@ -93,7 +93,7 @@ module Easymon
       assert_response :not_found
     end
 
-    test "return 404 if not authorized" do
+    test "return 403 if not authorized" do
       Easymon.authorize_with = Proc.new { false }
 
       get :index
