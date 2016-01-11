@@ -5,8 +5,8 @@ module Easymon
   class ChecksController < ApplicationController
     rescue_from Easymon::NoSuchCheck do |e|
       respond_to do |format|
-         format.any(:text, :html) { render :text => e.message, :status => :not_found }
-         format.json { render :json => e.message, :status => :not_found }
+        format.any(:text, :html) { render_result e.message, :not_found }
+        format.json { render :json => e.message, :status => :not_found }
       end
     end
 
@@ -32,7 +32,7 @@ module Easymon
       end
 
       respond_to do |format|
-         format.any(:text, :html) { render :text => message, :status => response_status }
+         format.any(:text, :html) { render_result message, response_status }
          format.json { render :json => checklist, :status => response_status }
       end
     end
@@ -55,14 +55,12 @@ module Easymon
         result = Easymon::Result.new(check_result, timing, check[:critical])
       end
 
-
-
       respond_to do |format|
         format.any(:text, :html) do
           if is_critical
-            render :text => add_prefix(checklist.success?, checklist), :status => checklist.response_status
+            render_result add_prefix(checklist.success?, checklist), checklist.response_status
           else
-            render :text => result, :status => result.response_status
+            render_result result, result.response_status
           end
         end
         format.json do
@@ -76,6 +74,11 @@ module Easymon
     end
 
     private
+      def render_result(message, status)
+        symbol_for_plain = Easymon.has_render_plain? ? :plain : :text
+        render symbol_for_plain => message, :status => status
+      end
+
       def add_prefix(result, message)
         result ? "OK #{message}" : "DOWN #{message}"
       end
