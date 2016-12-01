@@ -47,7 +47,7 @@ module Easymon
     
     private
       def database_up?(connection)
-          1 == connection.select_value("SELECT 1").to_i
+        connection.active?
       rescue
         false
       end
