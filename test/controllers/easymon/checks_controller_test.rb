@@ -33,7 +33,7 @@ module Easymon
 
     test "index when a critical check fails" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), :critical)
-      ActiveRecord::Base.connection.stubs(:select_value).raises("boom")
+      ActiveRecord::Base.connection.stubs(:active?).raises("boom")
       get :index
       assert_response :service_unavailable
       assert response.body.include?("database: Down"), "Should include failure text, got #{response.body}"
@@ -78,7 +78,7 @@ module Easymon
 
     test "show when the check fails" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
-      ActiveRecord::Base.connection.stubs(:select_value).raises("boom")
+      ActiveRecord::Base.connection.stubs(:active?).raises("boom")
 
       get :show, :check => "database"
 
