@@ -11,7 +11,7 @@ class ActiveRecordCheckOnPostgresqlTest < ActiveSupport::TestCase
   end
 
   test "#check returns a failed result on a failed run" do
-    PGBase.connection.stubs(:select_value).raises("boom")
+    PGBase.connection.stubs(:active?).raises("boom")
     check = create_check
     results = check.check
 
