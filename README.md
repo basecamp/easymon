@@ -173,7 +173,7 @@ check = Easymon::SemaphoreCheck.new("config/redis.yml")
 
 This is mainly a check that gets subclassed by the next check.
 
-###Traffic Enabled
+### Traffic Enabled
 `Easymon::TrafficEnabledCheck` is fairly specific, but when we want a server to
 accept traffic, we can place a file in the Rails.root, and the load balancers
 can use the result of this check to help decide whether or not to send traffic
@@ -184,7 +184,7 @@ Easymon::TrafficEnabledCheck.new("enable-traffic")
 ````
 This is a subclass of the Semaphore check mentioned above.
 
-###Split ActiveRecord
+### Split ActiveRecord
 `Easymon::SplitActiveRecordCheck` is the most complicated check, as it's not
 something you can use out of the gate. Here we pass a block so we get a fresh
 instance of `ActiveRecord::Base` or whatever other class we might be using to
