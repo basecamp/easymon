@@ -22,7 +22,7 @@ module Easymon
       def redis_up?
         redis = Redis.new(@config)
         reply = redis.ping == 'PONG'
-        redis.client.disconnect
+        redis.close
         reply
       rescue
         false
