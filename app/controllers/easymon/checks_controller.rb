@@ -17,8 +17,8 @@ module Easymon
 
     rescue_from Easymon::NoSuchCheck do |e|
       respond_to do |format|
-        format.any(:text, :html) { render_result e.message, :not_found }
-        format.json { render :json => e.message, :status => :not_found }
+        format.any(:text, :html) { render_result "Check Not Found", :not_found }
+        format.json { render :json => "Check Not Found", :status => :not_found }
       end
     end
 
