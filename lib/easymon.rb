@@ -8,6 +8,7 @@ require "easymon/repository"
 require "easymon/result"
 
 require "easymon/checks/active_record_check"
+require "easymon/checks/active_record_writeable_check"
 require "easymon/checks/split_active_record_check"
 require "easymon/checks/redis_check"
 require "easymon/checks/memcached_check"
