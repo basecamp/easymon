@@ -2,10 +2,10 @@ module Easymon
   class SplitActiveRecordCheck
     attr_accessor :block
     attr_accessor :results
-    
+
     # Here we pass a block so we get a fresh instance of ActiveRecord::Base or
     # whatever other class we might be using to make database connections
-    # 
+    #
     # For example, given the following other class:
     # module Easymon
     #   class Base < ActiveRecord::Base
@@ -18,12 +18,12 @@ module Easymon
     #     end
     #
     #     def database_configuration
-    #       env = "#{Rails.env}_slave"
+    #       env = "#{Rails.env}_replica"
     #       config = YAML.load_file(Rails.root.join('config/database.yml'))[env]
     #     end
     #   end
     # end
-    # 
+    #
     # We would check both it and ActiveRecord::Base like so:
     # check = Easymon::SplitActiveRecordCheck.new {
     #   [ActiveRecord::Base.connection, Easymon::Base.connection] 
@@ -31,20 +31,20 @@ module Easymon
     # Easymon::Repository.add("split-database", check)
     def initialize(&block)
       self.block = block
-    end 
-    
+    end
+
     # Assumes only 2 connections
     def check
       connections = Array(@block.call)
 
       results = connections.map{|connection| database_up?(connection) }
-      
-      master_status = results.first ? "Master: Up" : "Master: Down"
-      slave_status = results.last ? "Slave: Up" : "Slave: Down"
-      
-      [(results.all? && results.count > 0), "#{master_status} - #{slave_status}"]
+
+      primary_status = results.first ? "Primary: Up" : "Primary: Down"
+      replica_status = results.last ? "Replica: Up" : "Replica: Down"
+
+      [(results.all? && results.count > 0), "#{primary_status} - #{replica_status}"]
     end
-    
+
     private
       def database_up?(connection)
         connection.active?

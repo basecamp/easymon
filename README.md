@@ -203,7 +203,7 @@ module Easymon
       end
     end
     def database_configuration
-      env = "#{Rails.env}_slave"
+      env = "#{Rails.env}_replica"
       config = YAML.load_file(Rails.root.join('config/database.yml'))[env]
     end
   end

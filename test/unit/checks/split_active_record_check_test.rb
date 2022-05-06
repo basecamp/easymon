@@ -3,50 +3,50 @@ require 'test_helper'
 class SplitActiveRecordCheckTest < ActiveSupport::TestCase
 
   test "#run sets success conditions on successful run" do
-    master = ActiveRecord::Base.connection
+    primary = ActiveRecord::Base.connection
     Easymon::Base.establish_connection
-    slave = Easymon::Base.connection
+    replica = Easymon::Base.connection
 
-    check = Easymon::SplitActiveRecordCheck.new { [master, slave] }
+    check = Easymon::SplitActiveRecordCheck.new { [primary, replica] }
 
     results = check.check
 
-    assert_equal("Master: Up - Slave: Up", results[1])
+    assert_equal("Primary: Up - Replica: Up", results[1])
     assert_equal(true, results[0])
   end
 
-  test "#run sets failed conditions when slave is down" do
-    master = ActiveRecord::Base.connection
+  test "#run sets failed conditions when replica is down" do
+    primary = ActiveRecord::Base.connection
     Easymon::Base.establish_connection
-    slave = Easymon::Base.connection
+    replica = Easymon::Base.connection
 
-    slave.stubs(:active?).raises("boom")
+    replica.stubs(:active?).raises("boom")
 
-    check = Easymon::SplitActiveRecordCheck.new { [master, slave] }
+    check = Easymon::SplitActiveRecordCheck.new { [primary, replica] }
     results = check.check
 
-    assert_equal("Master: Up - Slave: Down", results[1])
+    assert_equal("Primary: Up - Replica: Down", results[1])
     assert_equal(false, results[0])
   end
 
-  test "#run sets failed conditions when master is down" do
-    master = ActiveRecord::Base.connection
+  test "#run sets failed conditions when primary is down" do
+    primary = ActiveRecord::Base.connection
     Easymon::Base.establish_connection
-    slave = Easymon::Base.connection
+    replica = Easymon::Base.connection
 
-    master.stubs(:active?).raises("boom")
+    primary.stubs(:active?).raises("boom")
 
-    check = Easymon::SplitActiveRecordCheck.new { [master, slave] }
+    check = Easymon::SplitActiveRecordCheck.new { [primary, replica] }
     results = check.check
 
-    assert_equal("Master: Down - Slave: Up", results[1])
+    assert_equal("Primary: Down - Replica: Up", results[1])
     assert_equal(false, results[0])
   end
 
   test "given nil as a config" do
     check = Easymon::SplitActiveRecordCheck.new { }
     results = check.check
-    assert_equal("Master: Down - Slave: Down", results[1])
+    assert_equal("Primary: Down - Replica: Down", results[1])
     assert_equal(false, results[0])
   end
 end
@@ -63,8 +63,8 @@ module Easymon
     end
 
     def database_configuration
-      env = "#{Rails.env}_slave"
-      config = YAML.load_file(Rails.root.join('config/database.yml'))[env]
+      env = "#{Rails.env}_replica"
+      YAML.load_file(Rails.root.join('config/database.yml'))[env]
     end
   end
 end

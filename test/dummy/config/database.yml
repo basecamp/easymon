@@ -17,10 +17,10 @@ test:
   host: 127.0.0.1
   port: 3306
 
-test_slave:
+test_replica:
   adapter: mysql2
   encoding: utf8
-  database: dummy_test_slave
+  database: dummy_test_replica
   username: root
   host: 127.0.0.1
   port: 3306
