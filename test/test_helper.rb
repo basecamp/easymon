@@ -34,4 +34,4 @@ end
 
 # setting up mocha *after* we load the test libraries as per
 # http://gofreerange.com/mocha/docs/
-require 'mocha/mini_test'
+require 'mocha/minitest'
