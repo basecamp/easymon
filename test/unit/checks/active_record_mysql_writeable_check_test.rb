@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ActiveRecordWriteableCheckTest < ActiveSupport::TestCase
+class ActiveRecordMysqlWriteableCheckTest < ActiveSupport::TestCase
 
   test "#check returns a successful result on a good run" do
     check = create_check
@@ -22,6 +22,6 @@ class ActiveRecordWriteableCheckTest < ActiveSupport::TestCase
 
   private
   def create_check
-    Easymon::ActiveRecordWriteableCheck.new(ActiveRecord::Base)
+    Easymon::ActiveRecordMysqlWriteableCheck.new(ActiveRecord::Base)
   end
 end

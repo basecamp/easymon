@@ -1,5 +1,5 @@
 module Easymon
-  class ActiveRecordWriteableCheck
+  class ActiveRecordMysqlWriteableCheck
     attr_accessor :klass
 
     def initialize(klass)
