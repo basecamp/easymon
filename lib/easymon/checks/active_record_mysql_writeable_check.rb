@@ -21,7 +21,7 @@ module Easymon
 
     private
       def database_writeable?
-        klass.connection.execute(@query).entries.flatten.first == 0
+        klass.connection.execute(@query).to_enum.first.first.to_i == 0
       rescue
         false
       end
