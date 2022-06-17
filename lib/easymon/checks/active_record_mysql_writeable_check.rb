@@ -2,11 +2,9 @@ module Easymon
   class ActiveRecordMysqlWriteableCheck
     attr_accessor :klass
 
-    def initialize(klass, makara = false)
+    def initialize(klass)
       self.klass = klass
-      @query = "SELECT @@read_only"
-      # Trick makara into using the primary db
-      @query += " for UPDATE" if makara
+      @query = "SELECT @@read_only for UPDATE"
     end
 
     def check
@@ -21,7 +19,7 @@ module Easymon
 
     private
       def database_writeable?
-        klass.connection.execute(@query).entries.flatten.first == 0
+        klass.connection.execute(@query).to_enum.first.first.to_i == 0
       rescue
         false
       end
