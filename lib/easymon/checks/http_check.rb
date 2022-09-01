@@ -35,7 +35,10 @@ module Easymon
         http.open_timeout = 5
         http.read_timeout = 5
 
-        http.request Net::HTTP::Head.new(uri.request_uri)
+        head = Net::HTTP::Head.new(uri.request_uri)
+        head.basic_auth(uri.user, uri.password) unless uri.userinfo.nil?
+
+        http.request head
       end
   end
 end

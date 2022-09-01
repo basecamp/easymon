@@ -48,6 +48,14 @@ class HttpCheckTest < ActiveSupport::TestCase
     Easymon::HttpCheck.new("http://localhost:9200").check
   end
 
+  test "sends request with basic auth if present" do
+    Net::HTTP::Head.any_instance.expects(:basic_auth).with("user", "password")
+    Easymon::HttpCheck.new("https://user:password@localhost:9200").check
+
+    Net::HTTP::Head.any_instance.expects(:basic_auth).never
+    Easymon::HttpCheck.new("https://localhost:9200").check
+  end
+
   private
   def create_check
     # Fake URL
