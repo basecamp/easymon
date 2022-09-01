@@ -38,6 +38,16 @@ class HttpCheckTest < ActiveSupport::TestCase
     assert_equal(false, results[0])
   end
 
+  test "uses the right ssl configuration" do
+    Net::HTTP.any_instance.expects(:use_ssl=).with(true)
+    Net::HTTP.any_instance.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER)
+    Easymon::HttpCheck.new("https://localhost:9200").check
+
+    Net::HTTP.any_instance.expects(:use_ssl=).with(false)
+    Net::HTTP.any_instance.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_NONE)
+    Easymon::HttpCheck.new("http://localhost:9200").check
+  end
+
   private
   def create_check
     # Fake URL
