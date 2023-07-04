@@ -17,7 +17,7 @@ module Easymon
       self.results = items.inject({}) do |hash, (name, check)|
         check_result = []
         timing = Benchmark.realtime { check_result = check[:check].check }
-        hash[name] = Easymon::Result.new(check_result, timing, check[:critical])
+        hash[name] = Easymon::Result.new(check[:check].class.name.demodulize, check_result, timing, check[:critical])
         hash
       end
       [self.success?, self.to_s]
@@ -42,6 +42,35 @@ module Easymon
         combined[name] = result.to_hash
       end
       combined
+    end
+
+    def to_prom
+      output = ""
+
+      # Status Loop
+      output << <<~HELP
+        # HELP easymon_check_up Target up
+        # TYPE easymon_check_up gauge)
+        HELP
+      results.each do |name, result|
+        labels = {check: name, type: result.type}
+        labels[:critical] = "1" if result.is_critical?
+        up = result.success? ? 1 : 0
+        output << "easymon_check_up{#{labels.map{|k,v| k.to_s+'='+v}.join(",")}} #{up}\n"
+      end
+
+      # Timing Loop
+      output << <<~HELP
+        # HELP easymon_check_duration_seconds easymon check execution duration in seconds
+        # TYPE easymon_check_duration_seconds gauge
+      HELP
+      results.each do |name, result|
+        labels = {check: name, type: result.type}
+        labels[:critical] = "1" if result.is_critical?
+        output << "easymon_check_duration_seconds{#{labels.map{|k,v| k.to_s+'='+v}.join(",")}} #{'%f' % result.timing}\n"
+      end
+
+      output
     end
 
     def as_json(*args)

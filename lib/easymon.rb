@@ -61,17 +61,20 @@ module Easymon
       mapper.instance_eval do
         connect "#{path}.:format", :controller => "easymon/checks", :action => "index"
         connect "#{path}/:check.:format", :controller => "easymon/checks", :action => "show"
+        connect "#{path}/metrics", :controller => "easymon/prometheus", :action => "index"
       end
     elsif Easymon.rails30?
       # Greater than 3.0, but less than 3.1
       mapper.instance_eval do
         get "#{path}(.:format)", :controller => 'easymon/checks', :action => 'index'
         get "#{path}/:check", :controller => 'easymon/checks', :action => 'show'
+        get "#{path}/metrics", :controller => 'easymon/prometheus', :action => 'index'
       end
     elsif Easymon.mountable_engine?
       # Rails 3.1+
       mapper.instance_eval do
         get "/(.:format)", :to => "checks#index"
+        get "/metrics", :to => "prometheus#index"
         root :to => "checks#index"
         get "/:check", :to => "checks#show"
       end

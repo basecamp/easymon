@@ -4,8 +4,10 @@ module Easymon
     attr_accessor :message
     attr_accessor :timing
     attr_accessor :critical
+    attr_accessor :type
 
-    def initialize(result, timing, is_critical = false)
+    def initialize(check_class, result, timing, is_critical = false)
+      self.type = check_class
       self.success = result[0]
       self.message = result[1]
       self.timing = timing
