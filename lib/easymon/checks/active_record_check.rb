@@ -18,6 +18,7 @@ module Easymon
     
     private
       def database_up?
+        klass.connection.connect!
         klass.connection.active?
       rescue
         false
