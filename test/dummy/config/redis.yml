@@ -1,11 +1,10 @@
 local: &local
-  :host: localhost
-  :port: 6379
-  :timeout: 1
-  :inline: true
+  host: localhost
+  port: 6379
+  timeout: 1
 
 development: *local
 
-# We don't actually connect to localhost, but we need a config block for the 
+# We don't actually connect to localhost, but we need a config block for the
 # redis client to use that's under Rails.env, which is test.  :)
 test: *local
