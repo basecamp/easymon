@@ -14,7 +14,7 @@ module Easymon
     def check
       mysql_primary_dc = extract_dc
       check_status = mysql_primary_dc == options[:datacenter]
-      message = "MySQL primary datacenter is: #{mysql_primary_dc}"
+      message = "MySQL primary datacenter is: #{mysql_primary_dc}, our datacenter is: #{options[:datacenter]}"
 
       [check_status, message]
     end
