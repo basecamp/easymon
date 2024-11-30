@@ -27,7 +27,9 @@ To get started, you'll need to add an initializer for this to do anything.
 In `config/initializers/easymon.rb`:
 
 ````ruby
-Easymon::Repository.add("application-database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
+Rails.application.config.after_initialize do
+  Easymon::Repository.add("application-database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
+end
 ````
 
 This will register a check called `application-database` for use.
