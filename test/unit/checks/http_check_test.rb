@@ -38,6 +38,24 @@ class HttpCheckTest < ActiveSupport::TestCase
     assert_equal(false, results[0])
   end
 
+  test "uses the right ssl configuration" do
+    Net::HTTP.any_instance.expects(:use_ssl=).with(true)
+    Net::HTTP.any_instance.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER)
+    Easymon::HttpCheck.new("https://localhost:9200").check
+
+    Net::HTTP.any_instance.expects(:use_ssl=).with(false)
+    Net::HTTP.any_instance.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_NONE)
+    Easymon::HttpCheck.new("http://localhost:9200").check
+  end
+
+  test "sends request with basic auth if present" do
+    Net::HTTP::Head.any_instance.expects(:basic_auth).with("user", "password")
+    Easymon::HttpCheck.new("https://user:password@localhost:9200").check
+
+    Net::HTTP::Head.any_instance.expects(:basic_auth).never
+    Easymon::HttpCheck.new("https://localhost:9200").check
+  end
+
   private
   def create_check
     # Fake URL
