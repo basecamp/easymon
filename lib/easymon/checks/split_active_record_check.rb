@@ -26,7 +26,7 @@ module Easymon
     #
     # We would check both it and ActiveRecord::Base like so:
     # check = Easymon::SplitActiveRecordCheck.new {
-    #   [ActiveRecord::Base.connection, Easymon::Base.connection] 
+    #   [ActiveRecord::Base.connection, Easymon::Base.connection]
     # }
     # Easymon::Repository.add("split-database", check)
     def initialize(&block)
@@ -47,6 +47,7 @@ module Easymon
 
     private
       def database_up?(connection)
+        klass.connection.connect!
         connection.active?
       rescue
         false
