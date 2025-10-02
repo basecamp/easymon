@@ -3,7 +3,7 @@ require 'test_helper'
 class ChecklistTest < ActiveSupport::TestCase
   def setup
     Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
-    Easymon::Repository.add("redis", Easymon::RedisCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"))[Rails.env].symbolize_keys))
+    Easymon::Repository.add("redis", Easymon::RedisCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"), aliases: true)[Rails.env].symbolize_keys))
     Easymon::Repository.add("memcached", Easymon::MemcachedCheck.new(Rails.cache))
   end
 
