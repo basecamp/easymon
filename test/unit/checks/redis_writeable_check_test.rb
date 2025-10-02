@@ -23,6 +23,6 @@ class RedisWriteableCheckTest < ActiveSupport::TestCase
   private
   def create_check
     # Get us a config hash from disk in this case
-    Easymon::RedisWriteableCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"))[Rails.env].symbolize_keys)
+    Easymon::RedisWriteableCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"), aliases: true)[Rails.env].symbolize_keys)
   end
 end

@@ -23,7 +23,7 @@ module Easymon
 
     test "index when a check fails" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
-      Easymon::Repository.add("redis", Easymon::RedisCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"))[Rails.env].symbolize_keys))
+      Easymon::Repository.add("redis", Easymon::RedisCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"), aliases: true)[Rails.env].symbolize_keys))
       Redis.any_instance.stubs(:ping).raises("boom")
       get :index
       assert_response :service_unavailable
@@ -41,7 +41,7 @@ module Easymon
 
     test "index when a non-critical check fails" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base), :critical)
-      Easymon::Repository.add("redis", Easymon::RedisCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"))[Rails.env].symbolize_keys))
+      Easymon::Repository.add("redis", Easymon::RedisCheck.new(YAML.load_file(Rails.root.join("config/redis.yml"), aliases: true)[Rails.env].symbolize_keys))
       Redis.any_instance.stubs(:ping).raises("boom")
       get :index
       assert_response :success
