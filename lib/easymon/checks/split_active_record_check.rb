@@ -8,25 +8,14 @@ module Easymon
     #
     # For example, given the following other class:
     # module Easymon
-    #   class Base < ActiveRecord::Base
-    #     def establish_connection(spec = nil)
-    #       if spec
-    #         super
-    #       elsif config = Easymon.database_configuration
-    #         super config
-    #       end
-    #     end
-    #
-    #     def database_configuration
-    #       env = "#{Rails.env}_replica"
-    #       config = YAML.load_file(Rails.root.join('config/database.yml'))[env]
-    #     end
+    #   class Replica < ActiveRecord::Base
+    #     establish_connection :"primary_replica"
     #   end
     # end
     #
     # We would check both it and ActiveRecord::Base like so:
     # check = Easymon::SplitActiveRecordCheck.new {
-    #   [ActiveRecord::Base.connection, Easymon::Base.connection]
+    #   [ActiveRecord::Base.connection, Easymon::Replica.connection]
     # }
     # Easymon::Repository.add("split-database", check)
     def initialize(&block)

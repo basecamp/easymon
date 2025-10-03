@@ -10,12 +10,22 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: mysql2
-  encoding: utf8
-  database: dummy_test
-  username: root
-  host: 127.0.0.1
-  port: 3306
+  primary:
+    adapter: mysql2
+    encoding: utf8
+    database: dummy_test
+    username: root
+    host: 127.0.0.1
+    port: 3306
+
+  primary_replica:
+    adapter: mysql2
+    encoding: utf8
+    database: dummy_test
+    username: root
+    host: 127.0.0.1
+    port: 3306
+    replica: true
 
 test_replica:
   adapter: mysql2
