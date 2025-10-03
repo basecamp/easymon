@@ -7,7 +7,7 @@ module Easymon
       else
         message = "DISABLED"
       end
-      [check_status, message]
+      [ check_status, message ]
     end
   end
 end

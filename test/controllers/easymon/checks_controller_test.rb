@@ -1,8 +1,7 @@
-require 'test_helper'
+require "test_helper"
 
 module Easymon
   class ChecksControllerTest < ActionController::TestCase
-
     setup do
       @routes = Easymon::Engine.routes
       Easymon.authorize_with = nil
@@ -51,7 +50,7 @@ module Easymon
 
     test "index returns valid json" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
-      get :index, :format => :json
+      get :index, format: :json
 
       json = JSON.parse(response.body)
 
@@ -61,14 +60,14 @@ module Easymon
 
     test "show when the check passes" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
-      get :show, :params => { check: "database" }
+      get :show, params: { check: "database" }
       assert_response :success
       assert response.body.include?("Up"), "Response should include message text, got #{response.body}"
     end
 
     test "show json when the check passes" do
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
-      get :show, :params => { :check => "database", :format => :json }
+      get :show, params: { check: "database", format: :json }
 
       json = JSON.parse(response.body)
 
@@ -80,16 +79,16 @@ module Easymon
       Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
       ActiveRecord::Base.connection.stubs(:active?).raises("boom")
 
-      get :show, :params => { :check => "database" }
+      get :show, params: { check: "database" }
 
       assert_response :service_unavailable
       assert response.body.include?("Down"), "Response should include failure text, got #{response.body}"
     end
 
     test "show if the check is not found" do
-      Easymon::Repository.names.each {|name| Easymon::Repository.remove(name)}
+      Easymon::Repository.names.each { |name| Easymon::Repository.remove(name) }
 
-      get :show, :params => { :check => "database" }
+      get :show, params: { check: "database" }
       assert_response :not_found
     end
 
@@ -99,7 +98,7 @@ module Easymon
       get :index
       assert_response :forbidden
 
-      get :show, :params => { :check => "database" }
+      get :show, params: { check: "database" }
       assert_response :forbidden
     end
   end

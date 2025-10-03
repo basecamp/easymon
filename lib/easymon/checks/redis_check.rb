@@ -15,13 +15,13 @@ module Easymon
       else
         message = "Down"
       end
-      [check_status, message]
+      [ check_status, message ]
     end
 
     private
       def redis_up?
         redis = Redis.new(@config)
-        reply = redis.ping == 'PONG'
+        reply = redis.ping == "PONG"
         if redis.respond_to? :close
           redis.close              # Redis 4+
         else

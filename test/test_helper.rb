@@ -19,7 +19,7 @@ class ActiveSupport::TestCase
     # This is needed to prevent leakage between tests, the Easymon::Repository
     # will remember all checks added to it, regardless of what test it was
     # added in
-    Easymon::Repository.names.each {|name| Easymon::Repository.remove(name)}
+    Easymon::Repository.names.each { |name| Easymon::Repository.remove(name) }
   end
 end
 
@@ -28,10 +28,10 @@ class ActionController::TestCase
     # This is needed to prevent leakage between tests, the Easymon::Repository
     # will remember all checks added to it, regardless of what test it was
     # added in
-    Easymon::Repository.names.each {|name| Easymon::Repository.remove(name)}
+    Easymon::Repository.names.each { |name| Easymon::Repository.remove(name) }
   end
 end
 
 # setting up mocha *after* we load the test libraries as per
 # http://gofreerange.com/mocha/docs/
-require 'mocha/minitest'
+require "mocha/minitest"

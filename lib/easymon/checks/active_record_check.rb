@@ -1,11 +1,11 @@
 module Easymon
   class ActiveRecordCheck
     attr_accessor :klass
-    
+
     def initialize(klass)
       self.klass = klass
-    end 
-    
+    end
+
     def check
       check_status = database_up?
       if check_status
@@ -13,9 +13,9 @@ module Easymon
       else
         message = "Down"
       end
-      [check_status, message]
+      [ check_status, message ]
     end
-    
+
     private
       def database_up?
         klass.connection.connect!

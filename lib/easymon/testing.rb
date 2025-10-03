@@ -7,11 +7,11 @@ module Easymon
     end
 
     def stub_service_success(name)
-      stub_check(name).returns([true, "Up"])
+      stub_check(name).returns([ true, "Up" ])
     end
 
     def stub_service_failure(name)
-      stub_check(name).returns([false, "Down"])
+      stub_check(name).returns([ false, "Down" ])
     end
   end
 end

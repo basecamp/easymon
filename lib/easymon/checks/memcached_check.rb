@@ -1,11 +1,11 @@
 module Easymon
   class MemcachedCheck
     attr_accessor :cache
-    
+
     def initialize(cache)
       self.cache = cache
-    end 
-    
+    end
+
     def check
       check_status = memcached_up?
       if check_status
@@ -13,9 +13,9 @@ module Easymon
       else
         message = "Down"
       end
-      [check_status, message]
+      [ check_status, message ]
     end
-    
+
     private
       def memcached_up?
         cache.write "health_check", 1

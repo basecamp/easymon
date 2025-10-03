@@ -1,13 +1,13 @@
-require 'net/https'
+require "net/https"
 
 module Easymon
   class HttpCheck
     attr_accessor :url
-    
+
     def initialize(url)
       self.url = url
-    end 
-    
+    end
+
     def check
       check_status = http_up?(url)
       if check_status
@@ -15,9 +15,9 @@ module Easymon
       else
         message = "Down"
       end
-      [check_status, message]
+      [ check_status, message ]
     end
-    
+
     private
       def http_up?(url)
         http_head(url).is_a?(Net::HTTPSuccess)

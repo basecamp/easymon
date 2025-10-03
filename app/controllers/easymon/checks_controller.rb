@@ -7,7 +7,7 @@ module Easymon
     # the latter for forward compatibility.
     unless defined?(before_action)
       class << self
-        %w( before ).each do |callback|
+        %w[ before ].each do |callback|
           alias_method :"#{callback}_action", :"#{callback}_filter"
         end
       end
@@ -18,7 +18,7 @@ module Easymon
     rescue_from Easymon::NoSuchCheck do |e|
       respond_to do |format|
         format.any(:text, :html) { render_result "Check Not Found", :not_found }
-        format.json { render :json => "Check Not Found", :status => :not_found }
+        format.json { render json: "Check Not Found", status: :not_found }
       end
     end
 
@@ -34,7 +34,7 @@ module Easymon
       unless checklist.empty?
         # override response_status if we have a "critical" checklist
         unless Easymon::Repository.critical.empty?
-          critical_checks = checklist.items.map{|name, entry| checklist.results[name] if Easymon::Repository.critical.include?(name)}.compact
+          critical_checks = checklist.items.map { |name, entry| checklist.results[name] if Easymon::Repository.critical.include?(name) }.compact
           critical_success = critical_checks.all?(&:success?)
           response_status = critical_success ? :ok : :service_unavailable
           message = add_prefix(critical_success, message)
@@ -45,7 +45,7 @@ module Easymon
 
       respond_to do |format|
          format.any(:text, :html) { render_result message, response_status }
-         format.json { render :json => checklist, :status => response_status }
+         format.json { render json: checklist, status: response_status }
       end
     end
 
@@ -77,9 +77,9 @@ module Easymon
         end
         format.json do
           if is_critical
-            render :json => checklist, :status => checklist.response_status
+            render json: checklist, status: checklist.response_status
           else
-            render :json => result, :status => result.response_status
+            render json: result, status: result.response_status
           end
         end
       end

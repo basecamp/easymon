@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class RepositoryTest < ActiveSupport::TestCase
-
   test "we can add a check to the repository" do
     Easymon::Repository.add("database", Easymon::ActiveRecordCheck.new(ActiveRecord::Base))
     check = Easymon::Repository.fetch("database")

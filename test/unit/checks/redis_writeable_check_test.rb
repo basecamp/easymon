@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class RedisWriteableCheckTest < ActiveSupport::TestCase
-
   test "#run sets success conditions on successful run" do
     Redis.any_instance.stubs(:set).returns("OK")
     check = create_check

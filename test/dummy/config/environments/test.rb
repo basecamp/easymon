@@ -20,7 +20,7 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
-  config.cache_store = :mem_cache_store, YAML.load_file(Rails.root.join('config/memcached.yml'), aliases: true)[Rails.env], { timeout: 1, namespace: "easymon-testing" }
+  config.cache_store = :mem_cache_store, YAML.load_file(Rails.root.join("config/memcached.yml"), aliases: true)[Rails.env], { timeout: 1, namespace: "easymon-testing" }
 
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable

@@ -55,25 +55,25 @@ module Easymon
       # Rails 2.3.x (anything less than 3, really)
       $:.unshift File.expand_path(File.join(
         File.dirname(__FILE__),
-        "..","app","controllers"))
-      require 'easymon/checks_controller'
+        "..", "app", "controllers"))
+      require "easymon/checks_controller"
 
       mapper.instance_eval do
-        connect "#{path}.:format", :controller => "easymon/checks", :action => "index"
-        connect "#{path}/:check.:format", :controller => "easymon/checks", :action => "show"
+        connect "#{path}.:format", controller: "easymon/checks", action: "index"
+        connect "#{path}/:check.:format", controller: "easymon/checks", action: "show"
       end
     elsif Easymon.rails30?
       # Greater than 3.0, but less than 3.1
       mapper.instance_eval do
-        get "#{path}(.:format)", :controller => 'easymon/checks', :action => 'index'
-        get "#{path}/:check", :controller => 'easymon/checks', :action => 'show'
+        get "#{path}(.:format)", controller: "easymon/checks", action: "index"
+        get "#{path}/:check", controller: "easymon/checks", action: "show"
       end
     elsif Easymon.mountable_engine?
       # Rails 3.1+
       mapper.instance_eval do
-        get "/(.:format)", :to => "checks#index"
-        root :to => "checks#index"
-        get "/:check", :to => "checks#show"
+        get "/(.:format)", to: "checks#index"
+        root to: "checks#index"
+        get "/:check", to: "checks#show"
       end
     end
   end

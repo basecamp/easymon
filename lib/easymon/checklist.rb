@@ -1,4 +1,4 @@
-require 'benchmark'
+require "benchmark"
 
 module Easymon
   class Checklist
@@ -8,7 +8,7 @@ module Easymon
     attr_accessor :items
     attr_accessor :results
 
-    def initialize(items={})
+    def initialize(items = {})
       self.items = items
       self.results = {}
     end
@@ -20,11 +20,11 @@ module Easymon
         hash[name] = Easymon::Result.new(check_result, timing, check[:critical])
         hash
       end
-      [self.success?, self.to_s]
+      [ self.success?, self.to_s ]
     end
 
     def timing
-      results.values.map{|r| r.timing}.inject(0, :+)
+      results.values.map { |r| r.timing }.inject(0, :+)
     end
 
     def to_text
@@ -32,12 +32,12 @@ module Easymon
     end
 
     def to_s
-      results.map{|name, result| "#{name}: #{result.to_s}"}.join("\n") +
+      results.map { |name, result| "#{name}: #{result}" }.join("\n") +
       "\n - Total Time - " + Easymon.timing_to_ms(self.timing) + "ms"
     end
 
     def to_hash
-      combined = {:timing => Easymon.timing_to_ms(timing)}
+      combined = { timing: Easymon.timing_to_ms(timing) }
       results.each do |name, result|
         combined[name] = result.to_hash
       end

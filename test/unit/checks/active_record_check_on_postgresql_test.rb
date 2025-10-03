@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class ActiveRecordCheckOnPostgresqlTest < ActiveSupport::TestCase
-
   test "#check returns a successful result on a good run" do
     check = create_check
     results = check.check
