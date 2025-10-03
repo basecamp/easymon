@@ -9,6 +9,7 @@ require "easymon/result"
 
 require "easymon/checks/active_record_check"
 require "easymon/checks/active_record_mysql_writeable_check"
+require "easymon/checks/multi_active_record_check"
 require "easymon/checks/split_active_record_check"
 require "easymon/checks/redis_check"
 require "easymon/checks/redis_writeable_check"
