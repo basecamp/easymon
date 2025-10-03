@@ -124,6 +124,7 @@ check.
  * Semaphore
  * Traffic Enabled
  * Split ActiveRecord
+ * Multi ActiveRecord
  * Http
 
 ### ActiveRecord
@@ -194,18 +195,8 @@ For example, given the following other class:
 
 ````ruby
 module Easymon
-  class Base < ActiveRecord::Base
-    def establish_connection(spec = nil)
-      if spec
-        super
-      elsif config = Easymon.database_configuration
-        super config
-      end
-    end
-    def database_configuration
-      env = "#{Rails.env}_replica"
-      config = YAML.load_file(Rails.root.join('config/database.yml'))[env]
-    end
+  class Replica < ActiveRecord::Base
+    establish_connection :"primary_replica"
   end
 end
 ````
@@ -218,6 +209,31 @@ check = Easymon::SplitActiveRecordCheck.new {
 }
 Easymon::Repository.add("split-database", check)
 ````
+
+### Multi ActiveRecord
+`Easymon::MultiActiveRecordCheck` is similar to the `SplitActiveRecordCheck`,
+but it can take an arbitrary number of databases:
+
+```ruby
+module Easymon
+  class PrimaryReplica < ActiveRecord::Base
+    establish_connection :"primary_replica"
+  end
+
+  class OtherReplica < ActiveRecord::Base
+    establish_connection :"other_replica"
+  end
+end
+
+check = Easymon::MultiActiveRecordCheck.new {
+   {
+     "Primary": ActiveRecord::Base.connection,
+     "PrimaryReplica": Easymon::PrimaryReplica.connection
+     "OtherReplica": Easymon::OtherReplica.connection
+   }
+}
+Easymon::Repository.add("multi-database", check)
+```
 
 ### Http
 `Easymon::HttpCheck` will check the return status of a HEAD request to a URL.
