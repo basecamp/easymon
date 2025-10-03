@@ -3,7 +3,7 @@ module Easymon
     attr_reader :repository
 
     def self.fetch(name)
-      return repository.fetch(name)
+      repository.fetch(name)
     rescue IndexError
       raise NoSuchCheck, "No check named '#{name}'"
     end
@@ -16,8 +16,8 @@ module Easymon
       repository.keys
     end
 
-    def self.add(name, check, is_critical=false)
-      entry = {:check => check, :critical => is_critical ? true : false}
+    def self.add(name, check, is_critical = false)
+      entry = { check: check, critical: is_critical ? true : false }
       repository[name] = entry
     end
 
@@ -30,7 +30,7 @@ module Easymon
     end
 
     def self.critical
-      repository.map{ |name, entry| name if entry[:critical] }.compact
+      repository.map { |name, entry| name if entry[:critical] }.compact
     end
   end
 end

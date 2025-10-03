@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class ActiveRecordMysqlWriteableCheckTest < ActiveSupport::TestCase
-
   test "#check returns a successful result on a good run" do
     check = create_check
     results = check.check
@@ -12,7 +11,7 @@ class ActiveRecordMysqlWriteableCheckTest < ActiveSupport::TestCase
 
   test "#check returns a failed result on a failed run" do
     # Return a mock'd object that responds to .entries that returns [[0]]
-    ActiveRecord::Base.connection.stubs(:execute).returns(mock().stubs(:entries).returns([[1]]))
+    ActiveRecord::Base.connection.stubs(:execute).returns(mock().stubs(:entries).returns([ [ 1 ] ]))
     check = create_check
     results = check.check
 

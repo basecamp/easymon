@@ -1,11 +1,11 @@
 module Easymon
   class SemaphoreCheck
     attr_accessor :file_name
-    
+
     def initialize(file_name)
       self.file_name = file_name
-    end 
-    
+    end
+
     def check
       check_status = semaphore_exists?
       if check_status
@@ -13,9 +13,9 @@ module Easymon
       else
         message = "#{file_name} does not exist!"
       end
-      [check_status, message]
+      [ check_status, message ]
     end
-    
+
     private
       def semaphore_exists?
         Rails.root.join(file_name).exist?

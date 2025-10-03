@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class NavigationTest < ActionDispatch::IntegrationTest
   fixtures :all
@@ -7,4 +7,3 @@ class NavigationTest < ActionDispatch::IntegrationTest
   #   assert true
   # end
 end
-

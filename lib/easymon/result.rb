@@ -33,7 +33,7 @@ module Easymon
     end
 
     def to_hash
-      {:success => success, :message => message, :timing => Easymon.timing_to_ms(timing), :critical => critical}
+      { success: success, message: message, timing: Easymon.timing_to_ms(timing), critical: critical }
     end
   end
 end

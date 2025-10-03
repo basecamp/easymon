@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class HttpCheckTest < ActiveSupport::TestCase
   test "#run sets success conditions on successful run" do
@@ -10,7 +10,7 @@ class HttpCheckTest < ActiveSupport::TestCase
     assert_equal("Up", results[1])
     assert_equal(true, results[0])
   end
-  
+
   test "#run sets failure conditions on a failed run" do
     Net::HTTP.any_instance.stubs(:request).returns(Net::HTTPNotFound.new(1.1, 404, "Not Found"))
 
@@ -30,7 +30,7 @@ class HttpCheckTest < ActiveSupport::TestCase
     assert_equal("Down", results[1])
     assert_equal(false, results[0])
   end
-  
+
   test "given nil as a url" do
     check = Easymon::HttpCheck.new(nil)
     results = check.check

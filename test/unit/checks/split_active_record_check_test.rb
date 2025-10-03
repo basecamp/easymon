@@ -1,12 +1,11 @@
-require 'test_helper'
+require "test_helper"
 
 class SplitActiveRecordCheckTest < ActiveSupport::TestCase
-
   test "#run sets success conditions on successful run" do
     primary = ActiveRecord::Base.connection
     replica = Easymon::Replica.connection
 
-    check = Easymon::SplitActiveRecordCheck.new { [primary, replica] }
+    check = Easymon::SplitActiveRecordCheck.new { [ primary, replica ] }
 
     results = check.check
 
@@ -20,7 +19,7 @@ class SplitActiveRecordCheckTest < ActiveSupport::TestCase
 
     replica.stubs(:active?).raises("boom")
 
-    check = Easymon::SplitActiveRecordCheck.new { [primary, replica] }
+    check = Easymon::SplitActiveRecordCheck.new { [ primary, replica ] }
     results = check.check
 
     assert_equal("Primary: Up - Replica: Down", results[1])
@@ -33,7 +32,7 @@ class SplitActiveRecordCheckTest < ActiveSupport::TestCase
 
     primary.stubs(:active?).raises("boom")
 
-    check = Easymon::SplitActiveRecordCheck.new { [primary, replica] }
+    check = Easymon::SplitActiveRecordCheck.new { [ primary, replica ] }
     results = check.check
 
     assert_equal("Primary: Down - Replica: Up", results[1])

@@ -14,7 +14,7 @@ module Easymon
       else
         message = "@@read_only is 1"
       end
-      [check_status, message]
+      [ check_status, message ]
     end
 
     private

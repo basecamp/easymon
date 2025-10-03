@@ -12,7 +12,7 @@ module Easymon
       check_status = redis_writeable?
       message = check_status ? "Writeable" : "Read Only"
 
-      [check_status, message]
+      [ check_status, message ]
     end
 
     private

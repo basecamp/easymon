@@ -26,12 +26,12 @@ module Easymon
     def check
       connections = Array(@block.call)
 
-      results = connections.map{|connection| database_up?(connection) }
+      results = connections.map { |connection| database_up?(connection) }
 
       primary_status = results.first ? "Primary: Up" : "Primary: Down"
       replica_status = results.last ? "Replica: Up" : "Replica: Down"
 
-      [(results.all? && results.count > 0), "#{primary_status} - #{replica_status}"]
+      [ (results.all? && results.count > 0), "#{primary_status} - #{replica_status}" ]
     end
 
     private

@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ChecklistTest < ActiveSupport::TestCase
   def setup
@@ -34,9 +34,9 @@ class ChecklistTest < ActiveSupport::TestCase
   test "#timing is a sum of all check results" do
     checklist = Easymon::Repository.all
     # Fake some results
-    checklist.results = %w(one two three).inject({}) do |hash, name|
+    checklist.results = %w[one two three].inject({}) do |hash, name|
       timing = 1.2
-      hash[name] = Easymon::Result.new([name, "dummy message"], timing)
+      hash[name] = Easymon::Result.new([ name, "dummy message" ], timing)
       hash
     end
 
