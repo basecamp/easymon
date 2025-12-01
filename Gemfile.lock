@@ -12,6 +12,7 @@ PATH
   remote: .
   specs:
     easymon (1.6.3)
+      benchmark
       redis
 
 GEM
