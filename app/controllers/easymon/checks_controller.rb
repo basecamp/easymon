@@ -1,4 +1,4 @@
-require_dependency "easymon/application_controller"
+require_dependency "easymon/application_controller" if Rails::VERSION::MAJOR < 7
 require "benchmark"
 
 module Easymon
