@@ -228,8 +228,29 @@ end
 check = Easymon::MultiActiveRecordCheck.new {
    {
      "Primary": ActiveRecord::Base.connection,
-     "PrimaryReplica": Easymon::PrimaryReplica.connection
+     "PrimaryReplica": Easymon::PrimaryReplica.connection,
      "OtherReplica": Easymon::OtherReplica.connection
+   }
+}
+Easymon::Repository.add("multi-database", check)
+```
+
+By default each connection is checked with `connection.active?`. You can
+instead supply a health check query that returns a single truthy/falsey value
+(e.g. `1`/`0` from MySQL), useful for richer checks like replication lag.
+Results are cast with `ActiveModel::Type::Boolean`, so an empty result (`nil`)
+is treated as Down, and any raise during the query is treated as Down.
+
+```ruby
+check = Easymon::MultiActiveRecordCheck.new {
+   {
+     "Primary": ActiveRecord::Base.connection,
+     "PrimaryReplica": [
+       Easymon::PrimaryReplica.connection,
+       # Only tolerate 30s of lag
+       "SELECT TIMESTAMPDIFF(MICROSECOND, MAX(ts), NOW(6)) / 1000000 < 30 FROM percona.heartbeat"
+     ],
+     "OtherReplica": Easymon::OtherReplica.connection # plain connection.active?
    }
 }
 Easymon::Repository.add("multi-database", check)
