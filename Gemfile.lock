@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    easymon (1.6.5)
+    easymon (1.6.6)
       benchmark
       redis
 
