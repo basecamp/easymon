@@ -27,14 +27,18 @@ module Easymon
 
       def http_head(url)
         uri = URI.parse(url)
+        is_https = uri.is_a?(URI::HTTPS)
 
         http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = uri.is_a?(URI::HTTPS)
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        http.use_ssl = is_https
+        http.verify_mode = is_https ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
         http.open_timeout = 5
         http.read_timeout = 5
 
-        http.request Net::HTTP::Head.new(uri.request_uri)
+        head = Net::HTTP::Head.new(uri.request_uri)
+        head.basic_auth(uri.user, uri.password) unless uri.userinfo.nil?
+
+        http.request head
       end
   end
 end
